@@ -1,4 +1,4 @@
-## MeowLearn Admin [(Free version)]()
+## MeowLearn Admin
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
