@@ -1,0 +1,58 @@
+.container{
+    overflow: none;
+}
+
+
+
+.badge{
+    border: 1px solid transparent;
+    border-radius: 7px;
+    padding: 1.5rem 5rem 1.5rem 1.5rem;
+    .section-title {
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 4.75rem;
+        color: #fff;   
+    }
+    .section-desc {
+
+        color: #fff;
+        font-weight: 600;
+        
+    }
+}
+.green-badge {
+    background-color:rgb(88,204,2);
+    
+}
+.green-button-active {
+    background-color:rgb(88,204,2);
+    box-shadow: 1px 5px 0px 2px rgb(58, 132, 2);
+}
+.purple-badge {
+    background-color: rgb(206,130,255);
+    
+}
+.purple-button-active {
+    background-color: rgb(206,130,255);
+    box-shadow: 1px 5px 0px 2px rgb(172, 52, 252);
+}
+
+
+
+.button-to-get-in-lesson {
+    border-radius: 50%;
+    padding: 1rem;
+    border: transparent;
+    &:active {
+        transform: translate(0, 2%);
+        box-shadow: none;
+    }
+    
+}
+
+.lesson-disable {
+    background-color: rgb(229,229,229);
+    border: transparent;
+    box-shadow: 1px 5px 0px 2px rgb(163, 163, 163);
+}
