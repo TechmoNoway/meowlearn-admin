@@ -11,23 +11,23 @@ import { useUserContext } from '../../../context/UserContext';
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-    {
-        label: 'Home',
-        icon: 'eva:home-fill',
-        to: '/dashboard/app',
-    },
-    {
-        label: 'Profile',
-        icon: 'eva:person-fill',
-        to: '/dashboard/profile',
-    },
-    {
-        label: 'Settings',
-        icon: 'eva:settings-2-fill',
-        to: '/dashboard/settings',
-    },
-];
+// const MENU_OPTIONS = [
+//     {
+//         label: 'Home',
+//         icon: 'eva:home-fill',
+//         to: '/dashboard/app',
+//     },
+//     {
+//         label: 'Profile',
+//         icon: 'eva:person-fill',
+//         to: '/dashboard/profile',
+//     },
+//     {
+//         label: 'Settings',
+//         icon: 'eva:settings-2-fill',
+//         to: '/dashboard/settings',
+//     },
+// ];
 
 // ----------------------------------------------------------------------
 
@@ -43,9 +43,7 @@ export default function AccountPopover() {
     useEffect(() => {
         const handleFetchUser = async () => {
             if (localStorage.getItem('token')) {
-                const { data: userListResponse } = await axios.get(
-                    'https://mocki.io/v1/5086a0ab-a71b-41d5-b02f-333f3f20f09a',
-                );
+                const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
 
                 const result = userListResponse.data.find(
                     (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,

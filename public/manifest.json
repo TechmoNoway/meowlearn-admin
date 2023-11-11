@@ -1,6 +1,13 @@
 {
   "short_name": "MeowLearn App",
   "name": "MeowLearn English App",
+  "icons": [
+    {
+      "src": "favicon/meowlearn.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

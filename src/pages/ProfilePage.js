@@ -5,11 +5,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 // @mui
 import { makeStyles } from '@mui/styles';
-import { Box, Button, Container, Divider, Fade, Grid, Modal, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Fade, Modal, Stack, TextField, Typography } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 
 // @component
-import account from '../_mock/account';
 import Iconify from '../components/iconify';
 import { useUserContext } from '../context/UserContext';
 
@@ -114,6 +113,12 @@ function ProfilePage() {
         handleFetchUser();
     }, []);
 
+    useEffect(() => {
+        if (preview !== currentUser.avatar && preview !== null) {
+            setShowSaveBar(true);
+        }
+    }, [preview]);
+
     const handleOpenPasswordModal = () => setPasswordOpen(true);
 
     const handleClosePasswordModal = () => setPasswordOpen(false);
@@ -149,12 +154,15 @@ function ProfilePage() {
         }
     };
 
-    const handleSaveChangeProfile = () => {};
+    const handleSaveChangeProfile = () => {
+        setShowSaveBar(false);
+    };
 
     const handleResetProfileInfo = () => {
         setNewUsername(currentUser.username);
         setNewEmail(currentUser.email);
         setShowSaveBar(false);
+        setPreview(null);
     };
 
     const handleSaveChangePassword = async () => {

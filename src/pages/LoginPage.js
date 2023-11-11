@@ -1,16 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
+import { Container, Typography, Divider, Stack, Button } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
-import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
-
-// ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
     [theme.breakpoints.up('md')]: {
@@ -38,8 +35,6 @@ const StyledContent = styled('div')(({ theme }) => ({
     padding: theme.spacing(12, 0),
 }));
 
-// ----------------------------------------------------------------------
-
 export default function LoginPage() {
     const mdUp = useResponsive('up', 'md');
 
@@ -52,12 +47,7 @@ export default function LoginPage() {
             <StyledRoot>
                 {mdUp && (
                     <StyledSection>
-                        <img
-                            src="https://i.ibb.co/TTBTY98/z4845818456380-fbc7c06e7103d7bf52b690ded2454c9e.jpg"
-                            alt="z4845818456380-fbc7c06e7103d7bf52b690ded2454c9e"
-                            width={450}
-                            height={450}
-                        />
+                        <img src="../../assets/logincover.jpg" alt="login-cover" width={450} height={450} />
 
                         <Typography variant="h3" sx={{ px: 5, mb: 5, textAlign: 'center' }}>
                             Hi, Welcome Back

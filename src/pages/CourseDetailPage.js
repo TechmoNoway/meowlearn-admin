@@ -13,8 +13,7 @@ function CourseDetailPage() {
 
     useEffect(() => {
         const fetchCourses = async () => {
-            const { data: response } = await axios.get('https://mocki.io/v1/5748652a-fa7b-4060-8ed9-bf40a64528f9');
-
+            const { data: response } = await axios.get('http://localhost:8871/api/block/getallblocks');
             setCourses(response.data);
             setCourseFound(response.data.find((item) => item.id === param.courseId));
         };
@@ -30,7 +29,7 @@ function CourseDetailPage() {
                 <title> CoursesDetail | MeowLearn </title>
             </Helmet>
 
-            <CourseDetail course={courseFound} />
+            <CourseDetail block={courseFound} />
         </>
     );
 }

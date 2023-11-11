@@ -27,9 +27,6 @@ import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// import USERLIST from '../_mock/user';
-
-// ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
     { id: 'username', label: 'Username', alignRight: false },
@@ -39,8 +36,6 @@ const TABLE_HEAD = [
     { id: 'status', label: 'Status', alignRight: false },
     { id: '' },
 ];
-
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -90,7 +85,7 @@ export default function UserPage() {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const { data: response } = await axios.get('https://mocki.io/v1/5086a0ab-a71b-41d5-b02f-333f3f20f09a');
+            const { data: response } = await axios.get('http://localhost:8870/api/user/getallusers');
             setUserList(response.data);
         };
 

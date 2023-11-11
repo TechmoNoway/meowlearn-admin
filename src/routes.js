@@ -27,7 +27,7 @@ export default function Router() {
                 { path: 'courses', element: <CoursesPage /> },
                 { path: 'blog', element: <BlogPage /> },
                 { path: 'coursedetail/:courseId', element: <CourseDetailPage /> },
-                { path: 'lesson/:lessonName', element: <LessonEditPage /> },
+                { path: 'lesson/:lessonId', element: <LessonEditPage /> },
                 { path: 'profile', element: <ProfilePage /> },
             ],
         },

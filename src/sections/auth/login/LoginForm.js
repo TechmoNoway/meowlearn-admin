@@ -44,9 +44,7 @@ export default function LoginForm() {
         const { data: tokenResponse } = await login(logger);
 
         if (tokenResponse.data.token) {
-            const { data: userListResponse } = await axios.get(
-                'https://mocki.io/v1/5086a0ab-a71b-41d5-b02f-333f3f20f09a',
-            );
+            const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
             const result = userListResponse.data.find(
                 (obj) => obj.username === jwtDecode(tokenResponse.data.token).sub,
             );
