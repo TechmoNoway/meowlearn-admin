@@ -43,6 +43,8 @@ export default function LoginForm() {
 
         const { data: tokenResponse } = await login(logger);
 
+        console.log(tokenResponse.data.token);
+
         if (tokenResponse.data.token) {
             const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
             const result = userListResponse.data.find(
@@ -101,9 +103,9 @@ export default function LoginForm() {
                 <div>
                     <></>
                 </div>
-                <Link variant="subtitle2" underline="hover">
+                {/* <Link variant="subtitle2" underline="hover">
                     Forgot password?
-                </Link>
+                </Link> */}
             </Stack>
 
             <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleSubmitLogin}>

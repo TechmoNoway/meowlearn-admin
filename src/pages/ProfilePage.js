@@ -93,23 +93,23 @@ function ProfilePage() {
     const [newPassword, setNewPassword] = useState('');
     const [showSaveBar, setShowSaveBar] = useState(false);
 
+    const handleFetchUser = async () => {
+        if (localStorage.getItem('token')) {
+            const { data: userListResponse } = await axios.get(
+                'https://mocki.io/v1/5086a0ab-a71b-41d5-b02f-333f3f20f09a',
+            );
+
+            const result = userListResponse.data.find(
+                (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,
+            );
+
+            setCurrentUser(result);
+            setNewUsername(result.username);
+            setNewEmail(result.email);
+        }
+    };
+
     useEffect(() => {
-        const handleFetchUser = async () => {
-            if (localStorage.getItem('token')) {
-                const { data: userListResponse } = await axios.get(
-                    'https://mocki.io/v1/5086a0ab-a71b-41d5-b02f-333f3f20f09a',
-                );
-
-                const result = userListResponse.data.find(
-                    (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,
-                );
-
-                setCurrentUser(result);
-                setNewUsername(result.username);
-                setNewEmail(result.email);
-            }
-        };
-
         handleFetchUser();
     }, []);
 
@@ -155,6 +155,20 @@ function ProfilePage() {
     };
 
     const handleSaveChangeProfile = () => {
+        const newUser = {
+            id: currentUser.id,
+            username: newUsername,
+            email: newEmail,
+            password: newPassword,
+            avatar: 'https://i.ibb.co/mhJM5g0/cat-ocean-eyes-xh-1920x1080.jpg',
+            roleId: currentUser.roleId,
+            createdAt: null,
+            updatedAt: null,
+            oldPassword,
+        };
+
+        // const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
+
         setShowSaveBar(false);
     };
 
@@ -166,23 +180,21 @@ function ProfilePage() {
     };
 
     const handleSaveChangePassword = async () => {
-        setPasswordOpen(false);
-
-        // const newUser = {
-        //     id: '2',
-        //     username: 'Kenny Will',
-        //     email: 'nguyentriky@gmail.com',
-        //     password: newPassword,
-        //     avatar: 'https://i.ibb.co/mhJM5g0/cat-ocean-eyes-xh-1920x1080.jpg',
-        //     roleId: '2',
-        //     createdAt: null,
-        //     updatedAt: null,
-        //     oldPassword,
-        // };
+        const newUser = {
+            id: currentUser.id,
+            username: currentUser.username,
+            email: currentUser.email,
+            password: newPassword,
+            avatar: 'https://i.ibb.co/mhJM5g0/cat-ocean-eyes-xh-1920x1080.jpg',
+            roleId: currentUser.roleId,
+            createdAt: null,
+            updatedAt: null,
+            oldPassword,
+        };
 
         // const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
 
-        // save password here
+        setPasswordOpen(false);
     };
 
     return (
