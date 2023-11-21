@@ -19,18 +19,28 @@ const navConfig = [
     {
         title: 'course',
         path: '/dashboard/courses',
-        icon: icon('ic_cart'),
+        icon: icon('ic_course'),
+    },
+    {
+        title: 'test',
+        path: '/dashboard/testpage',
+        icon: icon('ic_exam'),
+    },
+    {
+        title: 'practice',
+        path: '/dashboard/practicepage',
+        icon: icon('ic_book1'),
     },
     // {
     //     title: 'blog',
     //     path: '/dashboard/blog',
     //     icon: icon('ic_blog'),
     // },
-    {
-        title: 'login',
-        path: '/login',
-        icon: icon('ic_lock'),
-    },
+    // {
+    //     title: 'login',
+    //     path: '/login',
+    //     icon: icon('ic_lock'),
+    // },
 ];
 
 export default navConfig;

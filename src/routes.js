@@ -12,6 +12,10 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import CourseDetailPage from './pages/CourseDetailPage';
 import LessonEditPage from './pages/LessonEditPage';
 import ProfilePage from './pages/ProfilePage';
+import TestPage from './pages/TestPage';
+import PracticePage from './pages/PracticePage';
+import PracticeDetailPage from './pages/PracticeDetailPage';
+import TestDetailPage from './pages/TestDetailPage';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +33,13 @@ export default function Router() {
                 { path: 'coursedetail/:courseId', element: <CourseDetailPage /> },
                 { path: 'lesson/:lessonId', element: <LessonEditPage /> },
                 { path: 'profile', element: <ProfilePage /> },
+                { path: 'testmanage', element: <TestPage /> },
+                { path: 'practicepage', element: <PracticePage /> },
+                { path: 'practicedetail/:practiceTitle', element: <PracticeDetailPage /> },
+                { path: 'testpage', element: <TestPage /> },
+                { path: 'testdetail/:testTitle', element: <TestDetailPage /> },
+                { path: '404', element: <Page404 /> },
+                { path: '*', element: <Navigate to="/404" /> },
             ],
         },
         {
@@ -38,7 +49,11 @@ export default function Router() {
         },
         {
             element: <SimpleLayout />,
-            children: [{ element: <Navigate to="/login" />, index: true }],
+            children: [
+                { element: <Navigate to="/login" />, index: true },
+                { path: '404', element: <Page404 /> },
+                { path: '*', element: <Navigate to="/404" /> },
+            ],
         },
         // {
         //     element: <SimpleLayout />,

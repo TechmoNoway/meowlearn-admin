@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import ArrowBackIosRounded from '@mui/icons-material/ArrowBackIosRounded';
 
 // @mui
 import { Typography, Stack, Autocomplete, TextField, Container, Box, Button } from '@mui/material';
@@ -22,9 +23,10 @@ function LessonEditPage() {
     //     { id: 10, label: 'Question 10', description: '', correctAnswer: '', answer2: '', answer3: '', answer4: '' },
     // ]);
 
-    const [questions, setQuestions] = useState([]);
-
+    const navigate = useNavigate();
     const param = useParams();
+
+    const [questions, setQuestions] = useState([]);
     const [lessonFound, setLessonFound] = useState({});
 
     useEffect(() => {
@@ -100,6 +102,10 @@ function LessonEditPage() {
         });
     };
 
+    const handleNavigateBack = () => {
+        navigate(-1);
+    };
+
     console.log(currentShowQuestion);
     console.log(lessonFound);
 
@@ -107,11 +113,14 @@ function LessonEditPage() {
         <>
             <Container maxWidth="lg">
                 <Stack>
-                    <Typography variant="h3">
+                    <Typography variant="h3" mb={1} display="flex" alignItems="center">
+                        <Button onClick={handleNavigateBack} sx={{ minWidth: '36px', marginRight: 1 }}>
+                            <ArrowBackIosRounded />
+                        </Button>
                         Lesson {lessonFound.id}: {lessonFound.title}
                     </Typography>
 
-                    <Stack direction="row" spacing={2} my={3}>
+                    <Stack direction="row" spacing={2} my={2}>
                         <Autocomplete
                             onChange={(event, value) => setCurrentShowQuestion(value)}
                             disablePortal
@@ -123,14 +132,14 @@ function LessonEditPage() {
                             renderInput={(params) => <TextField {...params} label="Choose question" />}
                         />
 
-                        <Button
+                        {/* <Button
                             sx={{ width: 140 }}
                             variant="contained"
                             component="label"
                             startIcon={<Iconify icon="mdi:import" />}
                         >
                             Import <input type="file" hidden accept="application/pdf" onChange={handleFileUpload} />
-                        </Button>
+                        </Button> */}
 
                         <Button
                             onClick={handleClearAllQuestionInfo}
@@ -158,6 +167,7 @@ function LessonEditPage() {
                             sx={{ marginY: 3, width: 700 }}
                             variant="filled"
                             placeholder="Question sentence go here"
+                            label="Edit question"
                             multiline
                             rows={4}
                             size="lg"

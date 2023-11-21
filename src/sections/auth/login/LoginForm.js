@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Alert } from '@mui/material';
+import { Stack, IconButton, InputAdornment, TextField, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useUserContext } from '../../../context/UserContext';
 // components
@@ -31,6 +31,8 @@ export default function LoginForm() {
             password,
         };
 
+        localStorage.removeItem('token');
+
         if (!username) {
             setUsernameError('Username is empty');
             return;
@@ -43,13 +45,10 @@ export default function LoginForm() {
 
         const { data: tokenResponse } = await login(logger);
 
-        console.log(tokenResponse.data.token);
-
         if (tokenResponse.data.token) {
             const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
-            const result = userListResponse.data.find(
-                (obj) => obj.username === jwtDecode(tokenResponse.data.token).sub,
-            );
+            const filteredUserList = userListResponse.data.filter((user) => user.roleId === '2');
+            const result = filteredUserList.find((obj) => obj.username === jwtDecode(tokenResponse.data.token).sub);
 
             if (result) {
                 setUser(result);
@@ -64,8 +63,6 @@ export default function LoginForm() {
         } else {
             setAccountCorrection('This account does not exist');
         }
-
-        // navigate('/dashboard', { replace: true });
     };
 
     return (

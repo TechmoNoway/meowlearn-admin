@@ -161,9 +161,9 @@ export default function UserPage() {
                     <Typography variant="h4" gutterBottom>
                         User
                     </Typography>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+                    {/* <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
                         New User
-                    </Button>
+                    </Button> */}
                 </Stack>
 
                 <Card>

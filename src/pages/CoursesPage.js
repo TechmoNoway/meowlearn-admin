@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Container, Stack, Typography, Button, Modal, Fade, Box, TextField, Divider } from '@mui/material';
+import { Container, Stack, Typography, Button, Modal, Fade, Box, TextField, Divider, Alert } from '@mui/material';
 import axios from 'axios';
 
 import Iconify from '../components/iconify';
 import { CourseList } from '../sections/@dashboard/courses';
-// import COURSES from '../_mock/courses';
+import { sqlDate } from '../utils/formatDate';
 
 const style = {
     position: 'absolute',
@@ -22,10 +22,10 @@ const style = {
 
 export default function CoursesPage() {
     const [courses, setCourses] = useState([]);
-
     const [showAddCourseModal, setShowAddCourseModal] = useState(false);
     const [newCourseTitle, setNewCourseTitle] = useState('');
     const [newCourseDes, setNewCourseDes] = useState('');
+    const [addCourseError, setAddCourseError] = useState(null);
 
     const fetchCourses = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/block/getallblocks');
@@ -43,25 +43,29 @@ export default function CoursesPage() {
 
     const handleCloseModal = () => {
         setShowAddCourseModal(false);
+        setAddCourseError(null);
     };
 
     const handleAddNewCourse = async () => {
-        const newCourse = {
-            id: `${courses.length + 1}`,
-            title: newCourseTitle,
-            description: newCourseDes,
-            courseId: '9',
-            createdAt: '2023-11-01',
-            updatedAt: null,
-        };
+        if (newCourseTitle === '' || newCourseDes === '') {
+            setAddCourseError('Do not let any info empty!');
+        } else {
+            const newCourse = {
+                id: `${courses.length + 1}`,
+                title: newCourseTitle,
+                description: newCourseDes,
+                courseId: '9',
+                createdAt: sqlDate(),
+                updatedAt: null,
+            };
 
-        const { data: response } = await axios.post('http://localhost:8871/api/block/insertblock', newCourse);
+            const { data: response } = await axios.post('http://localhost:8871/api/block/insertblock', newCourse);
 
-        console.log(response.data);
-
-        if (response.data !== null) {
-            setShowAddCourseModal(false);
-            fetchCourses();
+            if (response.data !== null) {
+                setShowAddCourseModal(false);
+                setAddCourseError(null);
+                fetchCourses();
+            }
         }
     };
 
@@ -107,6 +111,8 @@ export default function CoursesPage() {
                                 Add your new course
                             </Typography>
                             <Stack spacing={3}>
+                                {addCourseError && <Alert severity="error">{addCourseError}</Alert>}
+
                                 <Box
                                     sx={{
                                         '& > :not(style)': { width: '50ch' },

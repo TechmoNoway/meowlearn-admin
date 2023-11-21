@@ -22,6 +22,7 @@ function CourseDetailPage() {
     }, []);
 
     // const courseFound = courses.find((item) => item.id === param.courseId);
+    
 
     return (
         <>

@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { AnimatePresence, motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 // @mui
 import { makeStyles } from '@mui/styles';
-import { Box, Button, Container, Divider, Fade, Modal, Stack, TextField, Typography } from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
+import { Alert, Box, Button, Container, Divider, Fade, Modal, Stack, TextField, Typography } from '@mui/material';
+import { NewspaperSharp, PhotoCamera } from '@mui/icons-material';
 
 // @component
 import Iconify from '../components/iconify';
 import { useUserContext } from '../context/UserContext';
+import { sqlDate } from '../utils/formatDate';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     avatarUpload: {
         position: 'relative',
     },
@@ -92,16 +94,17 @@ function ProfilePage() {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [showSaveBar, setShowSaveBar] = useState(false);
+    const [newPasswordError, setNewPasswordError] = useState(null);
 
     const handleFetchUser = async () => {
         if (localStorage.getItem('token')) {
-            const { data: userListResponse } = await axios.get(
-                'https://mocki.io/v1/5086a0ab-a71b-41d5-b02f-333f3f20f09a',
-            );
+            const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
 
             const result = userListResponse.data.find(
                 (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,
             );
+
+            console.log(result);
 
             setCurrentUser(result);
             setNewUsername(result.username);
@@ -154,22 +157,32 @@ function ProfilePage() {
         }
     };
 
-    const handleSaveChangeProfile = () => {
+    const handleSaveChangeProfile = async () => {
         const newUser = {
             id: currentUser.id,
             username: newUsername,
             email: newEmail,
-            password: newPassword,
-            avatar: 'https://i.ibb.co/mhJM5g0/cat-ocean-eyes-xh-1920x1080.jpg',
-            roleId: currentUser.roleId,
-            createdAt: null,
-            updatedAt: null,
-            oldPassword,
+            password: currentUser.password,
+            avatar: currentUser.avatar,
+            roleId: '2',
+            createdAt: currentUser.createdAt,
+            updatedAt: sqlDate(),
         };
 
-        // const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
+        const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
 
-        setShowSaveBar(false);
+        if (response.data.token === null) {
+            Swal.fire({
+                title: 'Update Fail!',
+                text: 'Something went wrong',
+                icon: 'error',
+            });
+        } else {
+            localStorage.removeItem('token');
+            localStorage.setItem('token', response.data.token);
+            handleFetchUser();
+            setShowSaveBar(false);
+        }
     };
 
     const handleResetProfileInfo = () => {
@@ -185,16 +198,36 @@ function ProfilePage() {
             username: currentUser.username,
             email: currentUser.email,
             password: newPassword,
-            avatar: 'https://i.ibb.co/mhJM5g0/cat-ocean-eyes-xh-1920x1080.jpg',
-            roleId: currentUser.roleId,
-            createdAt: null,
-            updatedAt: null,
+            avatar: currentUser.avatar,
+            roleId: '2',
+            createdAt: currentUser.createdAt,
+            updatedAt: sqlDate(),
             oldPassword,
         };
 
-        // const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
+        if (newPassword === oldPassword) {
+            setNewPasswordError('Your new password is same as the old password!');
+        } else {
+            const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
 
-        setPasswordOpen(false);
+            if (response.data.token === null) {
+                Swal.fire({
+                    title: 'Update Fail!',
+                    text: 'Something went wrong',
+                    icon: 'error',
+                });
+            } else {
+                Swal.fire({
+                    title: 'Update Success!',
+                    text: 'Update Successfully!',
+                    icon: 'success',
+                });
+                localStorage.removeItem('token');
+                localStorage.setItem('token', response.data.token);
+                handleFetchUser();
+                setPasswordOpen(false);
+            }
+        }
     };
 
     return (
@@ -252,7 +285,7 @@ function ProfilePage() {
                         name="username"
                         label={'Username'}
                         value={newUsername}
-                        onChange={(e) => handleOnChangeUsername(e)}
+                        onChange={handleOnChangeUsername}
                     />
                 </Box>
 
@@ -282,13 +315,20 @@ function ProfilePage() {
                                 Change Password
                             </Typography>
                             <Stack spacing={3}>
+                                {newPasswordError && <Alert severity="error">{newPasswordError}</Alert>}
+
                                 <Box
                                     sx={{
                                         '& > :not(style)': { width: '50ch' },
                                     }}
                                     autoComplete="off"
                                 >
-                                    <TextField name="old-password" label={'Old password'} />
+                                    <TextField
+                                        type="password"
+                                        name="old-password"
+                                        label={'Old password'}
+                                        onChange={(e) => setOldPassword(e.target.value)}
+                                    />
                                 </Box>
                                 <Box
                                     sx={{
@@ -297,9 +337,11 @@ function ProfilePage() {
                                     autoComplete="off"
                                 >
                                     <TextField
+                                        type="password"
                                         name="new-password"
                                         label={'New password'}
-                                        helperText="New password must be at least 8 characters long"
+                                        helperText="New password must be at least 8 and not longer than 15 characters long"
+                                        onChange={(e) => setNewPassword(e.target.value)}
                                     />
                                 </Box>
                             </Stack>
@@ -360,6 +402,7 @@ function ProfilePage() {
                                         backgroundColor: '#1b49b2',
                                     }}
                                     color="primary"
+                                    onClick={handleSaveChangeProfile}
                                 >
                                     Save Changes
                                 </Button>
