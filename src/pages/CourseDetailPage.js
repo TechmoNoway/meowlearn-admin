@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { CourseDetail } from '../sections/@dashboard/courses';
-import COURSES from '../_mock/courses';
 
 function CourseDetailPage() {
     const param = useParams();
@@ -14,6 +13,7 @@ function CourseDetailPage() {
     useEffect(() => {
         const fetchCourses = async () => {
             const { data: response } = await axios.get('http://localhost:8871/api/block/getallblocks');
+
             setCourses(response.data);
             setCourseFound(response.data.find((item) => item.id === param.courseId));
         };
@@ -22,7 +22,6 @@ function CourseDetailPage() {
     }, []);
 
     // const courseFound = courses.find((item) => item.id === param.courseId);
-    
 
     return (
         <>

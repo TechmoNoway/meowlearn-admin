@@ -27,6 +27,7 @@ import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { getAllUsers } from '../api/user';
 
 const TABLE_HEAD = [
     { id: 'username', label: 'Username', alignRight: false },
@@ -85,7 +86,8 @@ export default function UserPage() {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const { data: response } = await axios.get('http://localhost:8870/api/user/getallusers');
+            const { data: response } = await getAllUsers();
+
             setUserList(response.data);
         };
 

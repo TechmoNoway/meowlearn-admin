@@ -11,5 +11,5 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const getAllBlocks = () => API.get('/block/getallblocks');
-export const insertBlock = (formValue) => API.post('/block/insertblock', formValue);
+export const getAllLessons = () => API.get('/lesson/getalllessons');
+export const insertCourse = (formValue) => API.post('/lesson/insertlesson', formValue);

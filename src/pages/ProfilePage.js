@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { AnimatePresence, motion } from 'framer-motion';
 import Swal from 'sweetalert2';
@@ -7,12 +6,13 @@ import Swal from 'sweetalert2';
 // @mui
 import { makeStyles } from '@mui/styles';
 import { Alert, Box, Button, Container, Divider, Fade, Modal, Stack, TextField, Typography } from '@mui/material';
-import { NewspaperSharp, PhotoCamera } from '@mui/icons-material';
+import { PhotoCamera } from '@mui/icons-material';
 
 // @component
 import Iconify from '../components/iconify';
 import { useUserContext } from '../context/UserContext';
 import { sqlDate } from '../utils/formatDate';
+import { getAllUsers, updateUserApi } from '../api/user';
 
 const useStyles = makeStyles(() => ({
     avatarUpload: {
@@ -98,7 +98,7 @@ function ProfilePage() {
 
     const handleFetchUser = async () => {
         if (localStorage.getItem('token')) {
-            const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
+            const { data: userListResponse } = await getAllUsers();
 
             const result = userListResponse.data.find(
                 (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,
@@ -169,7 +169,7 @@ function ProfilePage() {
             updatedAt: sqlDate(),
         };
 
-        const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
+        const { data: response } = await updateUserApi(newUser);
 
         if (response.data.token === null) {
             Swal.fire({
@@ -208,7 +208,7 @@ function ProfilePage() {
         if (newPassword === oldPassword) {
             setNewPasswordError('Your new password is same as the old password!');
         } else {
-            const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
+            const { data: response } = await updateUserApi(newUser);
 
             if (response.data.token === null) {
                 Swal.fire({
@@ -302,62 +302,62 @@ function ProfilePage() {
                     <Iconify icon="material-symbols:change-circle-outline" color="#1C9CEA" width={22} height={22} />
                     <Typography ml={1}>Change Your password</Typography>
                 </Button>
-
-                <Modal
-                    open={passwordOpen}
-                    onClose={handleClosePasswordModal}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Fade in={passwordOpen}>
-                        <Stack sx={style} spacing={2}>
-                            <Typography id="modal-modal-title" variant="h6" component="h2">
-                                Change Password
-                            </Typography>
-                            <Stack spacing={3}>
-                                {newPasswordError && <Alert severity="error">{newPasswordError}</Alert>}
-
-                                <Box
-                                    sx={{
-                                        '& > :not(style)': { width: '50ch' },
-                                    }}
-                                    autoComplete="off"
-                                >
-                                    <TextField
-                                        type="password"
-                                        name="old-password"
-                                        label={'Old password'}
-                                        onChange={(e) => setOldPassword(e.target.value)}
-                                    />
-                                </Box>
-                                <Box
-                                    sx={{
-                                        '& > :not(style)': { width: '50ch' },
-                                    }}
-                                    autoComplete="off"
-                                >
-                                    <TextField
-                                        type="password"
-                                        name="new-password"
-                                        label={'New password'}
-                                        helperText="New password must be at least 8 and not longer than 15 characters long"
-                                        onChange={(e) => setNewPassword(e.target.value)}
-                                    />
-                                </Box>
-                            </Stack>
-                            <Divider sx={{ borderStyle: '3px dashed #000000', color: 'black' }} />
-                            <Stack direction="row" justifyContent={'end'} spacing={1}>
-                                <Button color="inherit" variant="outlined" onClick={() => setPasswordOpen(false)}>
-                                    <Typography>Back</Typography>
-                                </Button>
-                                <Button color="inherit" variant="outlined" onClick={handleSaveChangePassword}>
-                                    <Typography>Save</Typography>
-                                </Button>
-                            </Stack>
-                        </Stack>
-                    </Fade>
-                </Modal>
             </Stack>
+
+            <Modal
+                open={passwordOpen}
+                onClose={handleClosePasswordModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Fade in={passwordOpen}>
+                    <Stack sx={style} spacing={2}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Change Password
+                        </Typography>
+                        <Stack spacing={3}>
+                            {newPasswordError && <Alert severity="error">{newPasswordError}</Alert>}
+
+                            <Box
+                                sx={{
+                                    '& > :not(style)': { width: '50ch' },
+                                }}
+                                autoComplete="off"
+                            >
+                                <TextField
+                                    type="password"
+                                    name="current-password"
+                                    label={'Current password'}
+                                    onChange={(e) => setOldPassword(e.target.value)}
+                                />
+                            </Box>
+                            <Box
+                                sx={{
+                                    '& > :not(style)': { width: '50ch' },
+                                }}
+                                autoComplete="off"
+                            >
+                                <TextField
+                                    type="password"
+                                    name="new-password"
+                                    label={'New password'}
+                                    helperText="New password must be at least 8 and not longer than 15 characters long"
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                />
+                            </Box>
+                        </Stack>
+                        <Divider sx={{ borderStyle: '3px dashed #000000', color: 'black' }} />
+                        <Stack direction="row" justifyContent={'end'} spacing={1}>
+                            <Button color="inherit" variant="outlined" onClick={() => setPasswordOpen(false)}>
+                                <Typography>Back</Typography>
+                            </Button>
+                            <Button color="inherit" variant="outlined" onClick={handleSaveChangePassword}>
+                                <Typography>Save</Typography>
+                            </Button>
+                        </Stack>
+                    </Stack>
+                </Fade>
+            </Modal>
 
             <AnimatePresence>
                 {showSaveBar && (

@@ -18,6 +18,7 @@ import axios from 'axios';
 import Iconify from '../components/iconify';
 import { TestList } from '../sections/@dashboard/test';
 import { sqlDate } from '../utils/formatDate';
+import { getAllTests } from '../api/test';
 
 const style = {
     position: 'absolute',

@@ -29,7 +29,7 @@ export default function CoursesPage() {
 
     const fetchCourses = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/block/getallblocks');
-        // const { data: response } = await axios.get('http://localhost:8871/api/course/getallcourses');
+
         setCourses(response.data);
     };
 

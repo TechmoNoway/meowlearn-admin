@@ -8,6 +8,7 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 // mocks_
 import account from '../../../_mock/account';
 import { useUserContext } from '../../../context/UserContext';
+import { getAllUsers } from '../../../api/user';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +44,7 @@ export default function AccountPopover() {
     useEffect(() => {
         const handleFetchUser = async () => {
             if (localStorage.getItem('token')) {
-                const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
+                const { data: userListResponse } = await getAllUsers();
 
                 const result = userListResponse.data.find(
                     (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,

@@ -46,7 +46,9 @@ export default function LoginForm() {
         const { data: tokenResponse } = await login(logger);
 
         if (tokenResponse.data.token) {
-            const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
+            // const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
+            const { data: userListResponse } = await axios.get('http://26.127.65.83:8870/api/user/getallusers');
+
             const filteredUserList = userListResponse.data.filter((user) => user.roleId === '2');
             const result = filteredUserList.find((obj) => obj.username === jwtDecode(tokenResponse.data.token).sub);
 

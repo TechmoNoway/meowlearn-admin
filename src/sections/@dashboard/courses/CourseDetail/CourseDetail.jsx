@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -11,6 +11,7 @@ import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 // @component
 import classNames from 'classnames/bind';
 import Styles from './CourseDetail.module.scss';
+import stringIdSort from '../../../../utils/sort';
 
 const cx = classNames.bind(Styles);
 
@@ -19,6 +20,7 @@ CourseDetail.propTypes = {
 };
 
 function CourseDetail({ block }) {
+    const param = useParams();
     const navigate = useNavigate();
 
     const [lessonList, setLessonList] = useState([]);
@@ -29,7 +31,7 @@ function CourseDetail({ block }) {
 
             const result = response.data.filter((item) => item.blockId === '7');
 
-            console.log(result);
+            result.sort(stringIdSort);
 
             setLessonList(result);
         };
@@ -41,17 +43,14 @@ function CourseDetail({ block }) {
         navigate(-1);
     };
 
-    console.log(block);
-
     return (
         <>
-            <Button sx={{ marginLeft: '35px' }} onClick={handleNavigateBack}>
-                <ArrowBackIosRoundedIcon />
-                <Typography variant="subtitle1">back</Typography>
-            </Button>
             <Container maxWidth="md" className={cx('container', 'my-4')}>
-                <Typography variant="h3" className="d-flex my-4 mx-5">
-                    Course Detail Editor
+                <Typography variant="h3" mb={1} display="flex" alignItems="center">
+                    <Button onClick={handleNavigateBack} sx={{ minWidth: '36px', marginRight: 1 }}>
+                        <ArrowBackIosRoundedIcon />
+                    </Button>
+                    Course Detail
                 </Typography>
                 <div className={cx('course-section')}>
                     <Box sx={{ marginY: 4 }} className={cx('badge', 'green-badge')}>
@@ -59,7 +58,7 @@ function CourseDetail({ block }) {
                     </Box>
 
                     <Stack sx={{ display: 'flex', flex: 'flex-column', alignItems: 'center', paddingTop: 1 }}>
-                        <Link to={`/dashboard/lesson/${lessonList[0]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[0]?.title}`}>
                             <Button
                                 // onClick={handleNavigateToLesson}
                                 sx={{ marginY: 2, position: 'relative' }}
@@ -72,7 +71,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[1]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[1]?.title}`}>
                             <Button
                                 sx={{ marginY: 2, position: 'relative' }}
                                 type="submit"
@@ -85,7 +84,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[2]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[2]?.title}`}>
                             <Button
                                 type="submit"
                                 sx={{ marginY: 2, position: 'relative' }}
@@ -99,7 +98,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[3]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[3]?.title}`}>
                             <Button
                                 sx={{ marginY: 2, position: 'relative' }}
                                 type="submit"
@@ -113,7 +112,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[4]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[4]?.title}`}>
                             <Button
                                 sx={{ marginY: 2, position: 'relative' }}
                                 type="submit"
@@ -127,7 +126,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[5]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[5]?.title}`}>
                             <Button
                                 sx={{ marginY: 2, position: 'relative' }}
                                 type="submit"
@@ -140,7 +139,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[6]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[6]?.title}`}>
                             <Button
                                 sx={{ marginY: 2, position: 'relative' }}
                                 type="submit"
@@ -154,7 +153,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[7]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[7]?.title}`}>
                             <Button
                                 sx={{ marginY: 2, position: 'relative' }}
                                 type="submit"
@@ -168,7 +167,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[8]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[8]?.title}`}>
                             <Button
                                 sx={{ marginY: 2, position: 'relative' }}
                                 type="submit"
@@ -182,7 +181,7 @@ function CourseDetail({ block }) {
                             </Button>
                         </Link>
 
-                        <Link to={`/dashboard/lesson/${lessonList[9]?.id}`}>
+                        <Link to={`/dashboard/lesson/${lessonList[9]?.title}`}>
                             <Button
                                 sx={{ marginY: 2, position: 'relative' }}
                                 type="submit"

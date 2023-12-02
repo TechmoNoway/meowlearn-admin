@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowBackIosRounded } from '@mui/icons-material';
+// @mui
 import {
     Container,
     Card,
@@ -13,10 +18,7 @@ import {
     Stack,
     Box,
 } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowBackIosRounded } from '@mui/icons-material';
-import axios from 'axios';
+import { getAllPractices } from '../api/practice';
 
 export default function PracticeDetailPage() {
     const [questions, setQuestions] = useState([
