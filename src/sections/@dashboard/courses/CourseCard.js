@@ -5,7 +5,22 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 
 // @mui
-import { Box, Card, Link, Typography, Stack, Button, MenuItem, Popover, IconButton, Modal, Fade } from '@mui/material';
+import {
+    Box,
+    Card,
+    Link,
+    Typography,
+    Stack,
+    Button,
+    MenuItem,
+    Popover,
+    IconButton,
+    Modal,
+    Fade,
+    Alert,
+    TextField,
+    Divider,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 // @component
@@ -24,7 +39,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 555,
+    width: 650,
     bgcolor: 'background.paper',
     border: '1px solid transparent',
     borderRadius: '7px',
@@ -40,7 +55,8 @@ export default function CourseCard({ course }) {
     const { title, id } = course;
     const [randomImage, setRandomImage] = useState('');
     const [open, setOpen] = useState(null);
-    const [showAddCourseModal, setShowAddCourseModal] = useState(false);
+    const [showEditBlockModal, setShowEditBlockModal] = useState(false);
+    const [blockEditError, setBlockEditError] = useState('');
 
     const navigate = useNavigate();
 
@@ -64,26 +80,27 @@ export default function CourseCard({ course }) {
         randomingCover();
     }, []);
 
-    const handleOpenMenu = (event) => {
+    const handleOpenBlockEditMenu = (event) => {
         setOpen(event.currentTarget);
     };
 
-    const handleCloseMenu = () => {
+    const handleCloseBlockEditMenu = () => {
         setOpen(null);
     };
 
     const handleOpenModal = () => {
-        setShowAddCourseModal(true);
+        handleCloseBlockEditMenu();
+        setShowEditBlockModal(true);
     };
 
     const handleCloseModal = () => {
-        setShowAddCourseModal(false);
+        setShowEditBlockModal(false);
     };
 
     const handleEditBlock = () => {};
 
     const handleDeleteBlock = () => {
-        handleCloseMenu();
+        handleCloseBlockEditMenu();
 
         Swal.fire({
             title: 'Are you sure?',
@@ -134,7 +151,7 @@ export default function CourseCard({ course }) {
                         sx={{ width: '44px', height: '44px' }}
                         size="large"
                         color="inherit"
-                        onClick={handleOpenMenu}
+                        onClick={handleOpenBlockEditMenu}
                     >
                         <Iconify icon={'eva:more-vertical-fill'} />
                     </IconButton>
@@ -144,7 +161,7 @@ export default function CourseCard({ course }) {
             <Popover
                 open={Boolean(open)}
                 anchorEl={open}
-                onClose={handleCloseMenu}
+                onClose={handleCloseBlockEditMenu}
                 anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 PaperProps={{
@@ -159,7 +176,7 @@ export default function CourseCard({ course }) {
                     },
                 }}
             >
-                <MenuItem>
+                <MenuItem onClick={handleOpenModal}>
                     <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
                     Detail
                 </MenuItem>
@@ -171,18 +188,18 @@ export default function CourseCard({ course }) {
             {/* </Button> */}
 
             <Modal
-                open={showAddCourseModal}
+                open={showEditBlockModal}
                 onClose={handleCloseModal}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Fade in={showAddCourseModal}>
+                <Fade in={showEditBlockModal}>
                     <Stack sx={style} spacing={2}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Add your new course
+                            Edit your block
                         </Typography>
                         <Stack spacing={3}>
-                            {addCourseError && <Alert severity="error">{addCourseError}</Alert>}
+                            {blockEditError && <Alert severity="error">{blockEditError}</Alert>}
 
                             <Box
                                 sx={{
@@ -190,11 +207,7 @@ export default function CourseCard({ course }) {
                                 }}
                                 autoComplete="off"
                             >
-                                <TextField
-                                    name="title"
-                                    label={'Title'}
-                                    onChange={(e) => setNewCourseTitle(e.target.value)}
-                                />
+                                <TextField name="title" label={'Title'} />
                             </Box>
                             <Box
                                 sx={{
@@ -208,16 +221,15 @@ export default function CourseCard({ course }) {
                                     multiline
                                     rows={4}
                                     label={'Description'}
-                                    onChange={(e) => setNewCourseDes(e.target.value)}
                                 />
                             </Box>
                         </Stack>
                         <Divider sx={{ borderStyle: '3px dashed #000000', color: 'black' }} />
                         <Stack direction="row" justifyContent={'end'} spacing={1}>
-                            <Button color="inherit" variant="outlined" onClick={() => setShowAddCourseModal(false)}>
+                            <Button color="inherit" variant="outlined" onClick={() => setShowEditBlockModal(false)}>
                                 <Typography>Cancel</Typography>
                             </Button>
-                            <Button color="primary" variant="contained" onClick={handleAddNewCourse}>
+                            <Button color="primary" variant="contained">
                                 <Typography>Add New</Typography>
                             </Button>
                         </Stack>
