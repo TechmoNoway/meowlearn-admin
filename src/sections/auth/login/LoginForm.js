@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { trim } from 'lodash';
 // @mui
 import { Stack, IconButton, InputAdornment, TextField, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -27,7 +28,7 @@ export default function LoginForm() {
         e.preventDefault();
 
         const logger = {
-            username,
+            username: trim(username),
             password,
         };
 

@@ -18,7 +18,6 @@ import axios from 'axios';
 import Iconify from '../components/iconify';
 import { PracticeList } from '../sections/@dashboard/practice';
 import { sqlDate } from '../utils/formatDate';
-import { getAllPractices, insertPractice } from '../api/practice';
 
 const style = {
     position: 'absolute',
@@ -50,7 +49,6 @@ export default function PracticePage() {
 
     const fetchPractices = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/practice/getallpractices');
-
         setPractices(response.data);
     };
 

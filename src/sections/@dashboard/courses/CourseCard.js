@@ -25,8 +25,9 @@ import { styled } from '@mui/material/styles';
 
 // @component
 import Iconify from '../../../components/iconify';
+import { sqlDate } from '../../../utils/formatDate';
 
-const StyledProductImg = styled('img')({
+const StyledMainCardImg = styled('img')({
     top: 0,
     width: '100%',
     height: '100%',
@@ -34,12 +35,17 @@ const StyledProductImg = styled('img')({
     position: 'absolute',
 });
 
+const StyledModalEditImg = styled('img')({
+    width: '100%',
+    height: 310,
+});
+
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 650,
+    width: 700,
     bgcolor: 'background.paper',
     border: '1px solid transparent',
     borderRadius: '7px',
@@ -52,13 +58,15 @@ CourseCard.propTypes = {
 };
 
 export default function CourseCard({ course }) {
-    const { title, id } = course;
+    const navigate = useNavigate();
+
     const [randomImage, setRandomImage] = useState('');
     const [open, setOpen] = useState(null);
     const [showEditBlockModal, setShowEditBlockModal] = useState(false);
     const [blockEditError, setBlockEditError] = useState('');
+    const [courseCardForm, setCourseCardForm] = useState(course);
 
-    const navigate = useNavigate();
+    const { title, id, description, courseId, createdAt } = courseCardForm;
 
     const courseCovers = [
         '/assets/images/courses/course_1.jpg',
@@ -94,10 +102,41 @@ export default function CourseCard({ course }) {
     };
 
     const handleCloseModal = () => {
+        setCourseCardForm(course);
         setShowEditBlockModal(false);
     };
 
-    const handleEditBlock = () => {};
+    const handleModalTextfieldChange = (e) => {
+        setCourseCardForm({ ...courseCardForm, [e.target.name]: e.target.value });
+    };
+
+    const handleUpdateBlock = async () => {
+        const newBlock = {
+            id,
+            title,
+            description,
+            courseId,
+            createdAt,
+            updatedAt: sqlDate(),
+        };
+
+        const { data: response } = await axios.put(`http://localhost:8871/api/block/updateBlock`, newBlock);
+
+        if (response.success === false) {
+            Swal.fire({
+                title: 'Update Block Failed!',
+                text: 'Fail to update your block',
+                icon: 'error',
+            });
+        } else {
+            setShowEditBlockModal(false);
+            Swal.fire({
+                title: 'Update Block Success!',
+                text: 'Success to update your block',
+                icon: 'success',
+            });
+        }
+    };
 
     const handleDeleteBlock = () => {
         handleCloseBlockEditMenu();
@@ -112,20 +151,22 @@ export default function CourseCard({ course }) {
             confirmButtonText: 'Yes, delete it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const { data: response } = await axios.post('');
+                const { data: response } = await axios.delete(`http://localhost:8871/api/block/deleteBlock/${id}`);
 
-                if (response.data === null || response) {
+                if (response.success === false) {
                     Swal.fire({
                         title: 'Deleting Failed!',
                         text: 'Fail to delete your block',
                         icon: 'error',
                     });
                 } else {
+                    handleCloseModal();
                     Swal.fire({
                         title: 'Deleted!',
                         text: 'Your Block has been deleted.',
                         icon: 'success',
                     });
+                    navigate(0);
                 }
             }
         });
@@ -140,10 +181,10 @@ export default function CourseCard({ course }) {
             {/* <Button onClick={handleNavigate}> */}
             <Card>
                 <Box sx={{ pt: '100%', position: 'relative' }}>
-                    <StyledProductImg alt={title} src={randomImage} />
+                    <StyledMainCardImg alt={title} src={randomImage} />
                 </Box>
 
-                <Stack direction="row" spacing={2} sx={{ p: 2 }}>
+                <Stack direction="row" justifyContent="space-between" spacing={2} sx={{ p: 2 }}>
                     <Link href={`/dashboard/coursedetail/${id}`} color="inherit" underline="hover">
                         <Typography variant="subtitle2">{title}</Typography>
                     </Link>
@@ -198,39 +239,53 @@ export default function CourseCard({ course }) {
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             Edit your block
                         </Typography>
-                        <Stack spacing={3}>
-                            {blockEditError && <Alert severity="error">{blockEditError}</Alert>}
+                        <Stack direction="row" spacing={2}>
+                            <Box boxShadow={3}>
+                                <StyledModalEditImg alt={title} src={randomImage} />
+                            </Box>
 
-                            <Box
-                                sx={{
-                                    '& > :not(style)': { width: '50ch' },
-                                }}
-                                autoComplete="off"
-                            >
-                                <TextField name="title" label={'Title'} />
-                            </Box>
-                            <Box
-                                sx={{
-                                    '& > :not(style)': { width: '50ch' },
-                                }}
-                                autoComplete="off"
-                            >
-                                <TextField
-                                    name="description"
-                                    variant="filled"
-                                    multiline
-                                    rows={4}
-                                    label={'Description'}
-                                />
-                            </Box>
+                            <Stack spacing={3}>
+                                {blockEditError && <Alert severity="error">{blockEditError}</Alert>}
+
+                                <Box
+                                    sx={{
+                                        '& > :not(style)': { width: '37ch' },
+                                    }}
+                                    autoComplete="off"
+                                >
+                                    <TextField
+                                        value={title}
+                                        onChange={(e) => handleModalTextfieldChange(e)}
+                                        name="title"
+                                        label={'Title'}
+                                        multiline
+                                    />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        '& > :not(style)': { width: '37ch' },
+                                    }}
+                                    autoComplete="off"
+                                >
+                                    <TextField
+                                        value={description}
+                                        onChange={(e) => handleModalTextfieldChange(e)}
+                                        name="description"
+                                        variant="filled"
+                                        multiline
+                                        rows={4}
+                                        label={'Description'}
+                                    />
+                                </Box>
+                            </Stack>
                         </Stack>
                         <Divider sx={{ borderStyle: '3px dashed #000000', color: 'black' }} />
                         <Stack direction="row" justifyContent={'end'} spacing={1}>
-                            <Button color="inherit" variant="outlined" onClick={() => setShowEditBlockModal(false)}>
+                            <Button color="inherit" variant="outlined" onClick={handleCloseModal}>
                                 <Typography>Cancel</Typography>
                             </Button>
-                            <Button color="primary" variant="contained">
-                                <Typography>Add New</Typography>
+                            <Button color="primary" variant="contained" onClick={handleUpdateBlock}>
+                                <Typography>Update</Typography>
                             </Button>
                         </Stack>
                     </Stack>

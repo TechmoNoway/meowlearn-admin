@@ -86,7 +86,7 @@ export default function UserPage() {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const { data: response } = await getAllUsers();
+            const { data: response } = await axios.get(`http://localhost:8870/api/user/getallusers`);
 
             setUserList(response.data);
         };

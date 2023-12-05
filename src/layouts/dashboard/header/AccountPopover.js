@@ -44,7 +44,7 @@ export default function AccountPopover() {
     useEffect(() => {
         const handleFetchUser = async () => {
             if (localStorage.getItem('token')) {
-                const { data: userListResponse } = await getAllUsers();
+                const { data: userListResponse } = await axios.get(`http://localhost:8870/api/user/getallusers`);
 
                 const result = userListResponse.data.find(
                     (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,
@@ -109,8 +109,8 @@ export default function AccountPopover() {
                     }),
                 }}
             >
-                {/* <Avatar src={currentUser.avatar} alt="photoURL" /> */}
-                <Avatar src={account.photoURL} alt="photoURL" />
+                <Avatar src={currentUser.avatar} alt="photoURL" />
+                {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
             </IconButton>
 
             <Popover

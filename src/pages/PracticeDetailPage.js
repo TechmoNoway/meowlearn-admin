@@ -18,7 +18,6 @@ import {
     Stack,
     Box,
 } from '@mui/material';
-import { getAllPractices } from '../api/practice';
 
 export default function PracticeDetailPage() {
     const [questions, setQuestions] = useState([
@@ -230,7 +229,6 @@ export default function PracticeDetailPage() {
     };
 
     const handleSubmission = () => {
-        // Handle submission logic, e.g., send answers to the server
         console.log('User Answers:', userAnswers);
     };
 

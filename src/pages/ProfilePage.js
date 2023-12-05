@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { AnimatePresence, motion } from 'framer-motion';
 import Swal from 'sweetalert2';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // @mui
 import { makeStyles } from '@mui/styles';
@@ -85,6 +87,7 @@ const style = {
 function ProfilePage() {
     const classes = useStyles();
     const { user, setUser } = useUserContext();
+    const navigate = useNavigate();
 
     const [preview, setPreview] = useState(null);
     const [passwordOpen, setPasswordOpen] = useState(false);
@@ -98,7 +101,7 @@ function ProfilePage() {
 
     const handleFetchUser = async () => {
         if (localStorage.getItem('token')) {
-            const { data: userListResponse } = await getAllUsers();
+            const { data: userListResponse } = await axios.get(`http://localhost:8870/api/user/getallusers`);
 
             const result = userListResponse.data.find(
                 (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,
@@ -133,6 +136,7 @@ function ProfilePage() {
             reader.onload = () => {
                 setPreview(reader.result);
             };
+
             reader.readAsDataURL(file);
         }
     };
@@ -163,13 +167,17 @@ function ProfilePage() {
             username: newUsername,
             email: newEmail,
             password: currentUser.password,
-            avatar: currentUser.avatar,
+            avatar: preview,
             roleId: '2',
             createdAt: currentUser.createdAt,
             updatedAt: sqlDate(),
         };
 
-        const { data: response } = await updateUserApi(newUser);
+        // const { data: response } = await updateUserApi(newUser);
+
+        const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
+
+        console.log(response);
 
         if (response.data.token === null) {
             Swal.fire({
@@ -182,6 +190,7 @@ function ProfilePage() {
             localStorage.setItem('token', response.data.token);
             handleFetchUser();
             setShowSaveBar(false);
+            navigate(0);
         }
     };
 
