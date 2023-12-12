@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
+
+// mui
 import {
     Container,
     Stack,
@@ -13,11 +16,13 @@ import {
     Alert,
     Autocomplete,
 } from '@mui/material';
-import axios from 'axios';
 
+// components
 import Iconify from '../components/iconify';
 import { PracticeList } from '../sections/@dashboard/practice';
 import { sqlDate } from '../utils/formatDate';
+
+// ----------------------------------------------------------------------
 
 const style = {
     position: 'absolute',
@@ -35,10 +40,13 @@ const style = {
 const intervalOptions = ['25 minutes', '30 minutes', '60 minutes'];
 const quantityOptions = ['25', '30', '40'];
 
+// ----------------------------------------------------------------------
+
 export default function PracticePage() {
     const [practices, setPractices] = useState([]);
     const [showAddPracticeModal, setShowAddPracticeModal] = useState(false);
     const [newPracticeTitle, setNewPracticeTitle] = useState('');
+    const [newPracticeDescription, setNewPracticeDescription] = useState('');
     const [addPracticeError, setAddPracticeError] = useState(null);
 
     const [practiceIntervalOption, setPracticeIntervalOption] = useState(intervalOptions[0]);
@@ -49,6 +57,11 @@ export default function PracticePage() {
 
     const fetchPractices = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/practice/getallpractices');
+
+        // const { data: response } = await axios.get(
+        //     'https://course-backend-meolearn.onrender.com/api/practice/getallpractices',
+        // );
+
         setPractices(response.data);
     };
 
@@ -72,6 +85,7 @@ export default function PracticePage() {
             const newPractice = {
                 id: `${practices.length + 1}`,
                 title: newPracticeTitle,
+                description: newPracticeDescription,
                 interval: '',
                 requireQuestionAmount: 30,
                 level: 1,
@@ -83,6 +97,11 @@ export default function PracticePage() {
                 'http://localhost:8871/api/practice/insertpractice',
                 newPractice,
             );
+
+            // const { data: response } = await axios.post(
+            //     'https://course-backend-meolearn.onrender.com/api/practice/insertpractice',
+            //     newPractice,
+            // );
 
             if (response.data !== null) {
                 setShowAddPracticeModal(false);
@@ -146,6 +165,21 @@ export default function PracticePage() {
                                         name="title"
                                         label={'Title'}
                                         onChange={(e) => setNewPracticeTitle(e.target.value)}
+                                    />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        '& > :not(style)': { width: '50ch' },
+                                    }}
+                                    autoComplete="off"
+                                >
+                                    <TextField
+                                        name="description"
+                                        variant="filled"
+                                        multiline
+                                        rows={4}
+                                        label={'Description'}
+                                        onChange={(e) => setNewPracticeDescription(e.target.value)}
                                     />
                                 </Box>
                                 <Box

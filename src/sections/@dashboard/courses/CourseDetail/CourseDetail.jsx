@@ -29,6 +29,10 @@ function CourseDetail({ block }) {
         const fetchLessonList = async () => {
             const { data: response } = await axios.get('http://localhost:8871/api/lesson/getalllessons');
 
+            // const { data: response } = await axios.get(
+            //     'https://course-backend-meolearn.onrender.com/api/lesson/getalllessons',
+            // );
+
             const result = response.data.filter((item) => item.blockId === '7');
 
             result.sort(stringIdSort);

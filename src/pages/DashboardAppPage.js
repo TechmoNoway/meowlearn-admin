@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useEffect, useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
@@ -10,6 +11,32 @@ import { AppCurrentVisits, AppWebsiteVisits, AppWidgetSummary } from '../section
 
 export default function DashboardAppPage() {
     const theme = useTheme();
+
+    const [datesArray, setDatesArray] = useState([]);
+
+    const firstDayEachMonth = (year) => {
+        const dates = [];
+
+        for (let month = 0; month < 12; month += 1) {
+            const date = new Date(year, month, 1);
+            const formatted = date.toLocaleDateString('en-US', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            });
+            dates.push(formatted);
+        }
+
+        console.log(dates);
+
+        setDatesArray(dates);
+    };
+
+    useEffect(() => {
+        firstDayEachMonth(2022);
+    }, []);
+
+    console.log(datesArray);
 
     return (
         <>
@@ -24,16 +51,11 @@ export default function DashboardAppPage() {
 
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title="Android Users" total={10} icon={'ant-design:android-filled'} />
+                        <AppWidgetSummary title="Android Users" total={0o0} icon={'ant-design:android-filled'} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary
-                            title="Apple Users"
-                            total={10}
-                            color="info"
-                            icon={'ant-design:apple-filled'}
-                        />
+                        <AppWidgetSummary title="Apple Users" total={0} color="info" icon={'ant-design:apple-filled'} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
@@ -49,7 +71,7 @@ export default function DashboardAppPage() {
                         <AppWidgetSummary title="Bug Reports" total={10} color="error" icon={'ant-design:bug-filled'} />
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={8}>
+                    {/* <Grid item xs={12} md={6} lg={8}>
                         <AppWebsiteVisits
                             title="Website Visits"
                             subheader="(+43%) than last year"
@@ -87,9 +109,37 @@ export default function DashboardAppPage() {
                                 },
                             ]}
                         />
+                    </Grid> */}
+
+                    <Grid item xs={12} md={12} lg={12}>
+                        <AppWebsiteVisits
+                            title="Website Visits"
+                            subheader="(+43%) than last year"
+                            chartLabels={datesArray}
+                            chartData={[
+                                {
+                                    name: 'Team A',
+                                    type: 'column',
+                                    fill: 'solid',
+                                    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 60],
+                                },
+                                {
+                                    name: 'Team B',
+                                    type: 'area',
+                                    fill: 'gradient',
+                                    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43, 60],
+                                },
+                                {
+                                    name: 'Team C',
+                                    type: 'line',
+                                    fill: 'solid',
+                                    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 60],
+                                },
+                            ]}
+                        />
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item xs={12} md={12} lg={4}>
                         <AppCurrentVisits
                             title="Current Visits"
                             chartData={[

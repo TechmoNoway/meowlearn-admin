@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-// @mui
+
+// mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
-// mocks_
-import account from '../../../_mock/account';
+
+// components
 import { useUserContext } from '../../../context/UserContext';
-import { getAllUsers } from '../../../api/user';
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +45,10 @@ export default function AccountPopover() {
         const handleFetchUser = async () => {
             if (localStorage.getItem('token')) {
                 const { data: userListResponse } = await axios.get(`http://localhost:8870/api/user/getallusers`);
+
+                // const { data: userListResponse } = await axios.get(
+                //     `https://user-backend-meolearn.onrender.com/api/user/getallusers`,
+                // );
 
                 const result = userListResponse.data.find(
                     (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,

@@ -5,87 +5,20 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-// @mui
-import { makeStyles } from '@mui/styles';
+// mui
 import { Alert, Box, Button, Container, Divider, Fade, Modal, Stack, TextField, Typography } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 
-// @component
+// component
 import Iconify from '../components/iconify';
 import { useUserContext } from '../context/UserContext';
 import { sqlDate } from '../utils/formatDate';
-import { getAllUsers, updateUserApi } from '../api/user';
+import { profileModalStyle, useProfileStyles } from '../sections/@dashboard/profile/styles';
 
-const useStyles = makeStyles(() => ({
-    avatarUpload: {
-        position: 'relative',
-    },
-    avatarEdit: {
-        position: 'absolute',
-        zIndex: 1,
-        left: '145px',
-        top: '10px',
-    },
-    imageUpload: {
-        marginRight: '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '34px',
-        height: '34px',
-        marginBottom: 0,
-        borderRadius: '50%',
-        background: '#ffffff',
-        border: '1px solid transparent',
-        boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.12)',
-        cursor: 'pointer',
-        fontWeight: 'normal',
-        transition: 'all 0.2s ease-in-out',
-        '&:hover': {
-            background: '#f1f1f1',
-            borderColor: '#d6d6d6',
-        },
-    },
-    cameraIcon: {
-        fontSize: '16px',
-        '&:hover': {
-            color: 'lightcoral',
-        },
-    },
-    avatarPreview: {
-        width: '192px',
-        height: '192px',
-        position: 'relative',
-        borderRadius: '50%',
-        border: '6px solid #f8f8f8',
-        boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.1)',
-    },
-    imagePreview: {
-        width: '100%',
-        height: '100%',
-        borderRadius: '50%',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        transition: 'all 0.2s ease-in-out',
-    },
-}));
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 555,
-    bgcolor: 'background.paper',
-    border: '1px solid transparent',
-    borderRadius: '7px',
-    boxShadow: 24,
-    p: 4,
-};
+// ----------------------------------------------------------------------
 
 function ProfilePage() {
-    const classes = useStyles();
+    const classes = useProfileStyles();
     const { user, setUser } = useUserContext();
     const navigate = useNavigate();
 
@@ -102,6 +35,10 @@ function ProfilePage() {
     const handleFetchUser = async () => {
         if (localStorage.getItem('token')) {
             const { data: userListResponse } = await axios.get(`http://localhost:8870/api/user/getallusers`);
+
+            // const { data: userListResponse } = await axios.get(
+            //     `https://user-backend-meolearn.onrender.com/api/user/getallusers`,
+            // );
 
             const result = userListResponse.data.find(
                 (obj) => obj.username === jwtDecode(localStorage.getItem('token')).sub,
@@ -173,11 +110,12 @@ function ProfilePage() {
             updatedAt: sqlDate(),
         };
 
-        // const { data: response } = await updateUserApi(newUser);
-
         const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
 
-        console.log(response);
+        // const { data: response } = await axios.put(
+        //     'https://user-backend-meolearn.onrender.com/api/user/updateUser',
+        //     newUser,
+        // );
 
         if (response.data.token === null) {
             Swal.fire({
@@ -217,7 +155,12 @@ function ProfilePage() {
         if (newPassword === oldPassword) {
             setNewPasswordError('Your new password is same as the old password!');
         } else {
-            const { data: response } = await updateUserApi(newUser);
+            const { data: response } = await axios.put('http://localhost:8870/api/user/updateUser', newUser);
+
+            // const { data: response } = await axios.put(
+            //     'https://user-backend-meolearn.onrender.com/api/user/updateUser',
+            //     newUser,
+            // );
 
             if (response.data.token === null) {
                 Swal.fire({
@@ -320,7 +263,7 @@ function ProfilePage() {
                 aria-describedby="modal-modal-description"
             >
                 <Fade in={passwordOpen}>
-                    <Stack sx={style} spacing={2}>
+                    <Stack sx={profileModalStyle} spacing={2}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             Change Password
                         </Typography>

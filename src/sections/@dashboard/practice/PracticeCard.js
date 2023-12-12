@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-// @mui
+// mui
 import {
     Box,
     Card,
@@ -22,40 +22,13 @@ import {
     IconButton,
     Autocomplete,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
-// @component
+// component
 import Iconify from '../../../components/iconify';
 import { sqlDate } from '../../../utils/formatDate';
-
-const StyledPracticeImg = styled('img')({
-    top: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    position: 'absolute',
-});
-
-const StyledModalEditImg = styled('img')({
-    width: '100%',
-    height: 310,
-});
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 700,
-    bgcolor: 'background.paper',
-    border: '1px solid transparent',
-    borderRadius: '7px',
-    boxShadow: 24,
-    p: 4,
-};
+import { StyledModalEditImg, StyledPracticeImg, practiceModalStyle } from './styles';
 
 const intervalOptions = ['25 minutes', '30 minutes', '60 minutes'];
-const quantityOptions = ['25', '30', '40'];
 
 PracticeCard.propTypes = {
     practice: PropTypes.object,
@@ -70,17 +43,12 @@ export default function PracticeCard({ practice }) {
     const [practiceEditError, setPracticeEditError] = useState('');
     const [practiceCardForm, setPracticeCardForm] = useState(practice);
 
-    const { title, id, courseId, createdAt, interval, requiredQuestionAmount } = practiceCardForm;
+    const { title, id, interval, requiredQuestionAmount, description, createdAt } = practiceCardForm;
 
     const [practiceIntervalOption, setPracticeIntervalOption] = useState(
         intervalOptions[intervalOptions.indexOf(interval)],
     );
     const [practiceIntervalValue, setPracticeIntervalValue] = useState('');
-
-    const [practiceQuantityOption, setPracticeQuantityOption] = useState(
-        quantityOptions[quantityOptions.indexOf(`${requiredQuestionAmount}`)],
-    );
-    const [practiceQuantityValue, setPracticeQuantityValue] = useState('');
 
     const practiceCovers = [
         '/assets/images/courses/course_1.jpg',
@@ -124,18 +92,26 @@ export default function PracticeCard({ practice }) {
         setPracticeCardForm({ ...practiceCardForm, [e.target.name]: e.target.value });
     };
 
-    const handleUpdateBlock = async () => {
+    const handleUpdatePractice = async () => {
         const newPractice = {
             id,
             title,
-            courseId,
+            description,
+            interval: practiceIntervalValue,
+            requiredQuestionAmount,
             createdAt,
             updatedAt: sqlDate(),
         };
 
         const { data: response } = await axios.put(`http://localhost:8871/api/practice/updatePractice`, newPractice);
 
+        // const { data: response } = await axios.put(
+        //     `https://course-backend-meolearn.onrender.com/api/practice/updatePractice`,
+        //     newPractice,
+        // );
+
         if (response.success === false) {
+            setShowEditPracticeModal(false);
             Swal.fire({
                 title: 'Update Practice Failed!',
                 text: 'Fail to update your practice',
@@ -151,7 +127,7 @@ export default function PracticeCard({ practice }) {
         }
     };
 
-    const handleDeleteBlock = () => {
+    const handleDeletePractice = () => {
         handleClosePopover();
 
         Swal.fire({
@@ -164,19 +140,25 @@ export default function PracticeCard({ practice }) {
             confirmButtonText: 'Yes, delete it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const { data: response } = await axios.delete(`http://localhost:8871/api/block/deleteBlock/${id}`);
+                const { data: response } = await axios.delete(
+                    `http://localhost:8871/api/practice/deletePractice/${id}`,
+                );
+
+                // const { data: response } = await axios.delete(
+                //     `https://course-backend-meolearn.onrender.com/api/practice/deletePractice/${id}`,
+                // );
 
                 if (response.success === false) {
                     Swal.fire({
                         title: 'Deleting Failed!',
-                        text: 'Fail to delete your block',
+                        text: 'Fail to delete your practice',
                         icon: 'error',
                     });
                 } else {
                     handleCloseModal();
                     Swal.fire({
                         title: 'Deleted!',
-                        text: 'Your Block has been deleted.',
+                        text: 'Your practice has been deleted.',
                         icon: 'success',
                     });
                     navigate(0);
@@ -198,7 +180,7 @@ export default function PracticeCard({ practice }) {
                 </Box>
 
                 <Stack direction="row" justifyContent="space-between" spacing={2} sx={{ p: 2 }}>
-                    <Link href={`/dashboard/practicedetail/${title}`} color="inherit" underline="hover">
+                    <Link onClick={handleNavigate} color="inherit" underline="hover">
                         <Typography variant="subtitle2">{title}</Typography>
                     </Link>
                     <IconButton
@@ -234,7 +216,7 @@ export default function PracticeCard({ practice }) {
                     <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
                     Detail
                 </MenuItem>
-                <MenuItem sx={{ color: 'error.main' }} onClick={handleDeleteBlock}>
+                <MenuItem sx={{ color: 'error.main' }} onClick={handleDeletePractice}>
                     <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
                     Delete
                 </MenuItem>
@@ -248,7 +230,7 @@ export default function PracticeCard({ practice }) {
                 aria-describedby="modal-modal-description"
             >
                 <Fade in={showEditPracticeModal}>
-                    <Stack sx={style} spacing={2}>
+                    <Stack sx={practiceModalStyle} spacing={2}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             Edit your practice
                         </Typography>
@@ -278,6 +260,22 @@ export default function PracticeCard({ practice }) {
                                     sx={{
                                         '& > :not(style)': { width: '37ch' },
                                     }}
+                                    autoComplete="off"
+                                >
+                                    <TextField
+                                        value={description}
+                                        name="description"
+                                        variant="filled"
+                                        multiline
+                                        rows={4}
+                                        label={'Description'}
+                                        onChange={(e) => handleModalTextfieldChange(e)}
+                                    />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        '& > :not(style)': { width: '37ch' },
+                                    }}
                                 >
                                     <Autocomplete
                                         value={practiceIntervalOption}
@@ -294,26 +292,6 @@ export default function PracticeCard({ practice }) {
                                         renderInput={(params) => <TextField {...params} label="Practice interval" />}
                                     />
                                 </Box>
-                                <Box
-                                    sx={{
-                                        '& > :not(style)': { width: '37ch' },
-                                    }}
-                                >
-                                    <Autocomplete
-                                        value={practiceQuantityOption}
-                                        onChange={(event, newValue) => {
-                                            setPracticeQuantityOption(newValue);
-                                        }}
-                                        inputValue={practiceQuantityValue}
-                                        onInputChange={(event, newInputValue) => {
-                                            setPracticeQuantityValue(newInputValue);
-                                        }}
-                                        id="quantity-options"
-                                        options={quantityOptions}
-                                        sx={{ width: 300 }}
-                                        renderInput={(params) => <TextField {...params} label="Question quantity" />}
-                                    />
-                                </Box>
                             </Stack>
                         </Stack>
                         <Divider sx={{ borderStyle: '3px dashed #000000', color: 'black' }} />
@@ -321,7 +299,7 @@ export default function PracticeCard({ practice }) {
                             <Button color="inherit" variant="outlined" onClick={handleCloseModal}>
                                 <Typography>Cancel</Typography>
                             </Button>
-                            <Button color="primary" variant="contained" onClick={handleUpdateBlock}>
+                            <Button color="primary" variant="contained" onClick={handleUpdatePractice}>
                                 <Typography>Update</Typography>
                             </Button>
                         </Stack>

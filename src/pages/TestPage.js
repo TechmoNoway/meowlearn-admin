@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
+
+// mui
 import {
     Container,
     Stack,
@@ -13,12 +16,13 @@ import {
     Alert,
     Autocomplete,
 } from '@mui/material';
-import axios from 'axios';
 
+// component
 import Iconify from '../components/iconify';
 import { TestList } from '../sections/@dashboard/test';
 import { sqlDate } from '../utils/formatDate';
-import { getAllTests } from '../api/test';
+
+// ----------------------------------------------------------------------
 
 const style = {
     position: 'absolute',
@@ -36,10 +40,13 @@ const style = {
 const intervalOptions = ['25 minutes', '30 minutes', '60 minutes'];
 const quantityOptions = ['25', '30', '40'];
 
+// ----------------------------------------------------------------------
+
 export default function TestPage() {
     const [tests, setTests] = useState([]);
     const [showAddTestModal, setShowAddTestModal] = useState(false);
     const [newTestTitle, setNewTestTitle] = useState('');
+    const [newTestDescription, setNewTestDescription] = useState('');
     const [addTestError, setAddTestError] = useState(null);
 
     const [testIntervalOption, setTestIntervalOption] = useState(intervalOptions[0]);
@@ -50,6 +57,9 @@ export default function TestPage() {
 
     const fetchTests = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/test/getalltests');
+
+        // const { data: response } = await axios.get('https://course-backend-meolearn.onrender.com/api/test/getalltests');
+
         setTests(response.data);
     };
 
@@ -74,6 +84,7 @@ export default function TestPage() {
                 id: `${tests.length + 1}`,
                 title: newTestTitle,
                 interval: '',
+                description: newTestDescription,
                 requireQuestionAmount: 30,
                 level: 1,
                 createdAt: sqlDate(),
@@ -81,6 +92,11 @@ export default function TestPage() {
             };
 
             const { data: response } = await axios.post('http://localhost:8871/api/test/inserttest', newTest);
+
+            // const { data: response } = await axios.post(
+            //     'https://course-backend-meolearn.onrender.com/api/test/inserttest',
+            //     newTest,
+            // );
 
             if (response.data !== null) {
                 setShowAddTestModal(false);
@@ -144,6 +160,21 @@ export default function TestPage() {
                                         name="title"
                                         label={'Title'}
                                         onChange={(e) => setNewTestTitle(e.target.value)}
+                                    />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        '& > :not(style)': { width: '50ch' },
+                                    }}
+                                    autoComplete="off"
+                                >
+                                    <TextField
+                                        name="description"
+                                        variant="filled"
+                                        multiline
+                                        rows={4}
+                                        label={'Description'}
+                                        onChange={(e) => setNewTestDescription(e.target.value)}
                                     />
                                 </Box>
                                 <Box

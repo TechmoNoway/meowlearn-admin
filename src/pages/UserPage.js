@@ -2,6 +2,8 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
+
+// mui
 import {
     Card,
     Table,
@@ -23,11 +25,13 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 
+// component
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-import { getAllUsers } from '../api/user';
+
+// ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
     { id: 'username', label: 'Username', alignRight: false },
@@ -37,6 +41,8 @@ const TABLE_HEAD = [
     { id: 'status', label: 'Status', alignRight: false },
     { id: '' },
 ];
+
+// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -87,6 +93,10 @@ export default function UserPage() {
     useEffect(() => {
         const fetchUsers = async () => {
             const { data: response } = await axios.get(`http://localhost:8870/api/user/getallusers`);
+
+            // const { data: response } = await axios.get(
+            //     `https://user-backend-meolearn.onrender.com/api/user/getallusers`,
+            // );
 
             setUserList(response.data);
         };

@@ -122,6 +122,11 @@ export default function CourseCard({ course }) {
 
         const { data: response } = await axios.put(`http://localhost:8871/api/block/updateBlock`, newBlock);
 
+        // const { data: response } = await axios.put(
+        //     `https://course-backend-meolearn.onrender.com/api/block/updateBlock`,
+        //     newBlock,
+        // );
+
         if (response.success === false) {
             Swal.fire({
                 title: 'Update Block Failed!',
@@ -152,6 +157,10 @@ export default function CourseCard({ course }) {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const { data: response } = await axios.delete(`http://localhost:8871/api/block/deleteBlock/${id}`);
+
+                // const { data: response } = await axios.delete(
+                //     `https://course-backend-meolearn.onrender.com/api/block/deleteBlock/${id}`,
+                // );
 
                 if (response.success === false) {
                     Swal.fire({
@@ -185,7 +194,7 @@ export default function CourseCard({ course }) {
                 </Box>
 
                 <Stack direction="row" justifyContent="space-between" spacing={2} sx={{ p: 2 }}>
-                    <Link href={`/dashboard/coursedetail/${id}`} color="inherit" underline="hover">
+                    <Link onClick={handleNavigate} color="inherit" underline="hover">
                         <Typography variant="subtitle2">{title}</Typography>
                     </Link>
                     <IconButton

@@ -30,6 +30,10 @@ export default function CoursesPage() {
     const fetchCourses = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/block/getallblocks');
 
+        // const { data: response } = await axios.get(
+        //     `https://course-backend-meolearn.onrender.com/api/block/getallblocks`,
+        // );
+
         setCourses(response.data);
     };
 
@@ -60,6 +64,11 @@ export default function CoursesPage() {
             };
 
             const { data: response } = await axios.post('http://localhost:8871/api/block/insertblock', newCourse);
+
+            // const { data: response } = await axios.post(
+            //     'https://course-backend-meolearn.onrender.com/api/block/insertblock',
+            //     newCourse,
+            // );
 
             if (response.data !== null) {
                 setShowAddCourseModal(false);

@@ -199,6 +199,10 @@ export default function PracticeDetailPage() {
     const fetchPracticeList = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/practice/getallpractices');
 
+        // const { data: response } = await axios.get(
+        //     'https://course-backend-meolearn.onrender.com/api/practice/getallpractices',
+        // );
+
         const foundPractice = response.data.find((practice) => practice.title === param.practiceTitle);
 
         console.log(foundPractice);

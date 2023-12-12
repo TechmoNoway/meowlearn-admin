@@ -9,7 +9,6 @@ import { Typography, Stack, Autocomplete, TextField, Container, Box, Button } fr
 
 // @component
 import Iconify from '../components/iconify';
-import { getAllLessons } from '../api/lesson';
 
 const questionLabels = [
     'Question 1',
@@ -50,6 +49,10 @@ function LessonEditPage() {
 
     const fetchQuestions = async () => {
         const { data: lessonResponse } = await axios.get('http://localhost:8871/api/lesson/getalllessons');
+
+        // const { data: lessonResponse } = await axios.get(
+        //     'https://course-backend-meolearn.onrender.com/api/lesson/getalllessons',
+        // );
 
         // setQuestions(questionsResponse.data);
         const lessonFound = lessonResponse.data.find((item) => item.title === param.lessonId);

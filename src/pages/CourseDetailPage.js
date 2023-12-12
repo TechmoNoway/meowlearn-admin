@@ -14,6 +14,10 @@ function CourseDetailPage() {
         const fetchCourses = async () => {
             const { data: response } = await axios.get('http://localhost:8871/api/block/getallblocks');
 
+            // const { data: response } = await axios.get(
+            //     'https://course-backend-meolearn.onrender.com/api/block/getallblocks',
+            // );
+
             setCourses(response.data);
             setCourseFound(response.data.find((item) => item.id === param.courseId));
         };

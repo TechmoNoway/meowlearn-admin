@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { trim } from 'lodash';
-// @mui
+
+// mui
 import { Stack, IconButton, InputAdornment, TextField, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useUserContext } from '../../../context/UserContext';
+
 // components
 import Iconify from '../../../components/iconify';
 import { login } from '../../../api/user';
@@ -44,11 +46,15 @@ export default function LoginForm() {
             return;
         }
 
-        const { data: tokenResponse } = await login(logger);
+        // const { data: tokenResponse } = await login(logger);
+
+        const { data: tokenResponse } = await axios.post('http://localhost:8870/api/user/checklogin', logger);
 
         if (tokenResponse.data.token) {
-            // const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
-            const { data: userListResponse } = await axios.get('http://26.127.65.83:8870/api/user/getallusers');
+            const { data: userListResponse } = await axios.get('http://localhost:8870/api/user/getallusers');
+            // const { data: userListResponse } = await axios.get(
+            //     'https://user-backend-meolearn.onrender.com/api/user/getallusers',
+            // );
 
             const filteredUserList = userListResponse.data.filter((user) => user.roleId === '2');
             const result = filteredUserList.find((obj) => obj.username === jwtDecode(tokenResponse.data.token).sub);
