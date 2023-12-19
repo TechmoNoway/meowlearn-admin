@@ -17,6 +17,7 @@ import {
     Alert,
     Autocomplete,
     styled,
+    CircularProgress,
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
@@ -62,6 +63,7 @@ export default function PracticePage() {
     const [addPracticeError, setAddPracticeError] = useState(null);
     const [practiceFile, setPracticeFile] = useState(null);
     const [practiceFileName, setPracticeFileName] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const fetchPractices = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/practice/getallpractices');
@@ -88,7 +90,7 @@ export default function PracticePage() {
 
     const handlePracticeFileUpload = (e) => {
         const file = e.target.files[0];
-        setPracticeFile(file)
+        setPracticeFile(file);
         setPracticeFileName(file.name);
     };
 
@@ -96,13 +98,15 @@ export default function PracticePage() {
         if (newPracticeTitle === '' || practiceFile === null) {
             setAddPracticeError('Do not let any info empty!');
         } else {
+            setLoading(true);
+
             const newPractice = {
                 title: newPracticeTitle,
                 description: newPracticeDescription,
                 interval: '60 minutes',
                 requireQuestionAmount: 40,
                 level: 1,
-                courseId: "2701034384",
+                courseId: '2701034384',
             };
 
             const formData = new FormData();
@@ -119,7 +123,7 @@ export default function PracticePage() {
             const { data: response } = await axios.post(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                }
+                },
             });
 
             if (response.data !== null) {
@@ -128,6 +132,7 @@ export default function PracticePage() {
                 setPracticeFile(null);
                 setAddPracticeError(null);
                 fetchPractices();
+                setLoading(false);
 
                 Swal.fire({
                     title: 'Create Practice Successfully!',
@@ -135,6 +140,7 @@ export default function PracticePage() {
                     icon: 'success',
                 });
             } else {
+                setLoading(false);
                 setShowAddPracticeModal(false);
                 Swal.fire({
                     title: 'Create Practice Fail!',
@@ -202,8 +208,6 @@ export default function PracticePage() {
                                     />
                                 </Box>
 
-                            
-
                                 <Stack spacing={1} direction="row" alignItems="center">
                                     <Button
                                         sx={{ height: 50 }}
@@ -230,8 +234,17 @@ export default function PracticePage() {
                                 >
                                     <Typography>Cancel</Typography>
                                 </Button>
-                                <Button color="primary" variant="contained" onClick={handleAddNewPractice}>
-                                    <Typography>Add New</Typography>
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    disabled={loading}
+                                    onClick={handleAddNewPractice}
+                                >
+                                    {loading ? (
+                                        <CircularProgress size={22} sx={{ px: 2 }} />
+                                    ) : (
+                                        <Typography>Add New</Typography>
+                                    )}
                                 </Button>
                             </Stack>
                         </Stack>

@@ -295,10 +295,10 @@ export default function OrderPage() {
                     Detail
                 </MenuItem>
 
-                <MenuItem sx={{ color: 'error.main' }}>
+                {/* <MenuItem sx={{ color: 'error.main' }}>
                     <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
                     Delete
-                </MenuItem>
+                </MenuItem> */}
             </Popover>
         </>
     );

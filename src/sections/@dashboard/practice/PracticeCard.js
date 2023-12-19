@@ -148,7 +148,7 @@ export default function PracticeCard({ practice }) {
                 //     `https://course-backend-meolearn.onrender.com/api/practice/deletePractice/${id}`,
                 // );
 
-                if (response.success === false) {
+                if (response.data === null) {
                     Swal.fire({
                         title: 'Deleting Failed!',
                         text: 'Fail to delete your practice',
