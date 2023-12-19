@@ -168,14 +168,13 @@ export default function PracticeCard({ practice }) {
     };
 
     const handleNavigate = () => {
-        navigate(`/dashboard/practicedetail/${title}`);
+        navigate(`/dashboard/practicedetail/${id}`);
     };
 
     return (
         <>
-            {/* <Button onClick={handleNavigate}> */}
             <Card>
-                <Box sx={{ pt: '100%', position: 'relative' }}>
+                <Box sx={{ pt: '100%', position: 'relative', cursor: 'pointer' }} onClick={handleNavigate}>
                     <StyledPracticeImg alt={title} src={randomImage} />
                 </Box>
 
@@ -221,7 +220,7 @@ export default function PracticeCard({ practice }) {
                     Delete
                 </MenuItem>
             </Popover>
-            {/* </Button> */}
+
 
             <Modal
                 open={showEditPracticeModal}
@@ -263,7 +262,7 @@ export default function PracticeCard({ practice }) {
                                     autoComplete="off"
                                 >
                                     <TextField
-                                        value={description}
+                                        value={description || ''}
                                         name="description"
                                         variant="filled"
                                         multiline

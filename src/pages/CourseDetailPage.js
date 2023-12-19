@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { CourseDetail } from '../sections/@dashboard/courses';
+import AddLessonWidget from '../sections/@dashboard/lesson/AddLessonWidget';
 
 function CourseDetailPage() {
     const param = useParams();
@@ -34,6 +35,7 @@ function CourseDetailPage() {
             </Helmet>
 
             <CourseDetail block={courseFound} />
+            <AddLessonWidget />
         </>
     );
 }

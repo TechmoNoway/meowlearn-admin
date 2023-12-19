@@ -189,7 +189,7 @@ export default function CourseCard({ course }) {
         <>
             {/* <Button onClick={handleNavigate}> */}
             <Card>
-                <Box sx={{ pt: '100%', position: 'relative' }}>
+                <Box sx={{ pt: '100%', position: 'relative', cursor: 'pointer' }} onClick={handleNavigate}>
                     <StyledMainCardImg alt={title} src={randomImage} />
                 </Box>
 

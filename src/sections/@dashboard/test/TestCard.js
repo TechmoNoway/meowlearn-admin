@@ -147,7 +147,7 @@ export default function TestCard({ test }) {
         } else {
             setShowEditTestModal(false);
             Swal.fire({
-                title: 'Update Test Success!',
+                title: 'Update Test Successfully!',
                 text: 'Success to update your test',
                 icon: 'success',
             });
@@ -193,14 +193,13 @@ export default function TestCard({ test }) {
     };
 
     const handleNavigate = () => {
-        navigate(`/dashboard/testdetail/${title}`);
+        navigate(`/dashboard/testdetail/${id}`);
     };
 
     return (
         <>
-            {/* <Button onClick={handleNavigate}> */}
             <Card>
-                <Box sx={{ pt: '100%', position: 'relative' }}>
+                <Box sx={{ pt: '100%', position: 'relative', cursor: 'pointer' }} onClick={handleNavigate}>
                     <StyledTestImg alt={title} src={randomImage} />
                 </Box>
 
@@ -245,7 +244,6 @@ export default function TestCard({ test }) {
                     Delete
                 </MenuItem>
             </Popover>
-            {/* </Button> */}
 
             <Modal
                 open={showEditTestModal}

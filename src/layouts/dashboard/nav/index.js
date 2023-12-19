@@ -33,7 +33,7 @@ export default function Nav({ openNav, onCloseNav }) {
             }}
         >
             <Box sx={{ px: 2.5, py: 3, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Link to="/" component={RouterLink} sx={{ display: 'contents' }}>
+                <Link to="/dashboard/app" component={RouterLink} sx={{ display: 'contents' }}>
                     <img src="https://i.ibb.co/LrbTYwQ/meowlearn.png" width="120px" height="120px" alt="" />
                 </Link>
             </Box>

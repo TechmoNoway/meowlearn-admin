@@ -10,7 +10,6 @@ import {
     Typography,
     Radio,
     Button,
-    LinearProgress,
     FormGroup,
     FormControlLabel,
     Grid,
@@ -18,237 +17,105 @@ import {
     Stack,
     Box,
 } from '@mui/material';
+import Swal from 'sweetalert2';
 
 export default function PracticeDetailPage() {
-    const [questions, setQuestions] = useState([
-        {
-            text: 'What is the capital of France?',
-            options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-        },
-        {
-            text: 'Which planet is known as the Red Planet?',
-            options: ['Mars', 'Venus', 'Jupiter', 'Saturn'],
-        },
-        {
-            text: 'Who wrote "Romeo and Juliet"?',
-            options: ['Charles Dickens', 'William Shakespeare', 'Jane Austen', 'Mark Twain'],
-        },
-        {
-            text: 'What is the capital of France?',
-            options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-        },
-        {
-            text: 'Which planet is known as the Red Planet?',
-            options: ['Mars', 'Venus', 'Jupiter', 'Saturn'],
-        },
-        {
-            text: 'Who painted the Mona Lisa?',
-            options: ['Vincent van Gogh', 'Pablo Picasso', 'Leonardo da Vinci', 'Claude Monet'],
-        },
-        {
-            text: 'What is the largest mammal?',
-            options: ['Elephant', 'Blue Whale', 'Giraffe', 'Hippopotamus'],
-        },
-        {
-            text: 'In which year did World War II end?',
-            options: ['1943', '1945', '1950', '1939'],
-        },
-        {
-            text: 'What is the capital of Japan?',
-            options: ['Beijing', 'Tokyo', 'Seoul', 'Bangkok'],
-        },
-        {
-            text: 'Who wrote "To Kill a Mockingbird"?',
-            options: ['J.K. Rowling', 'Ernest Hemingway', 'Harper Lee', 'F. Scott Fitzgerald'],
-        },
-        {
-            text: 'What is the chemical symbol for gold?',
-            options: ['Au', 'Ag', 'Fe', 'Hg'],
-        },
-        {
-            text: 'Which country is known as the Land of the Rising Sun?',
-            options: ['China', 'Japan', 'South Korea', 'Vietnam'],
-        },
-        {
-            text: 'Who developed the theory of relativity?',
-            options: ['Isaac Newton', 'Albert Einstein', 'Galileo Galilei', 'Stephen Hawking'],
-        },
-        {
-            text: 'Which ocean is the largest?',
-            options: ['Atlantic Ocean', 'Indian Ocean', 'Southern Ocean', 'Pacific Ocean'],
-        },
-        {
-            text: 'What is the capital of Australia?',
-            options: ['Sydney', 'Melbourne', 'Canberra', 'Brisbane'],
-        },
-        {
-            text: 'Who is the author of "1984"?',
-            options: ['Aldous Huxley', 'George Orwell', 'Ray Bradbury', 'J.R.R. Tolkien'],
-        },
-        {
-            text: 'What is the currency of Brazil?',
-            options: ['Peso', 'Rupiah', 'Real', 'Yen'],
-        },
-        {
-            text: 'Which element has the chemical symbol "O"?',
-            options: ['Oxygen', 'Osmium', 'Oganesson', 'Osmium'],
-        },
-        {
-            text: 'Who was the first woman to win a Nobel Prize?',
-            options: ['Marie Curie', 'Rosalind Franklin', 'Jane Goodall', 'Ada Lovelace'],
-        },
-        {
-            text: 'What is the main ingredient in guacamole?',
-            options: ['Tomato', 'Onion', 'Avocado', 'Cilantro'],
-        },
-        {
-            text: 'Which country is known as the Land of the Midnight Sun?',
-            options: ['Norway', 'Canada', 'Russia', 'Sweden'],
-        },
-        {
-            text: 'Who played the character Jack Dawson in the movie "Titanic"?',
-            options: ['Leonardo DiCaprio', 'Brad Pitt', 'Tom Hanks', 'Johnny Depp'],
-        },
-        {
-            text: 'What is the largest desert in the world?',
-            options: ['Sahara Desert', 'Gobi Desert', 'Antarctica', 'Arabian Desert'],
-        },
-        {
-            text: 'Which planet is known as the "Red Planet"?',
-            options: ['Venus', 'Mars', 'Jupiter', 'Saturn'],
-        },
-        {
-            text: 'Who is the author of "Pride and Prejudice"?',
-            options: ['Charlotte Brontë', 'Emily Brontë', 'Jane Austen', 'Charles Dickens'],
-        },
-        {
-            text: 'What is the tallest mountain in the world?',
-            options: ['Mount Kilimanjaro', 'Mount Everest', 'Denali', 'Mount Fuji'],
-        },
-        {
-            text: 'Who is known as the "Father of Computer Science"?',
-            options: ['Alan Turing', 'Charles Babbage', 'Ada Lovelace', 'Tim Berners-Lee'],
-        },
-        {
-            text: 'What is the speed of light in a vacuum?',
-            options: [
-                '299,792 kilometers per second',
-                '150,000 kilometers per second',
-                '450,000 kilometers per second',
-                '600,000 kilometers per second',
-            ],
-        },
-        {
-            text: 'Which animal is known as the "King of the Jungle"?',
-            options: ['Elephant', 'Lion', 'Tiger', 'Giraffe'],
-        },
-        {
-            text: 'Who painted "Starry Night"?',
-            options: ['Vincent van Gogh', 'Pablo Picasso', 'Claude Monet', 'Leonardo da Vinci'],
-        },
-        {
-            text: 'What is the largest island in the world?',
-            options: ['Greenland', 'Australia', 'Borneo', 'Madagascar'],
-        },
-        {
-            text: "Which gas makes up the majority of Earth's atmosphere?",
-            options: ['Oxygen', 'Carbon Dioxide', 'Nitrogen', 'Hydrogen'],
-        },
-        {
-            text: 'Who is the author of "The Great Gatsby"?',
-            options: ['F. Scott Fitzgerald', 'Ernest Hemingway', 'J.D. Salinger', 'Charles Dickens'],
-        },
-        {
-            text: 'What is the smallest prime number?',
-            options: ['0', '1', '2', '3'],
-        },
-        {
-            text: 'Who is known as the "Queen of Pop"?',
-            options: ['Madonna', 'Beyoncé', 'Lady Gaga', 'Rihanna'],
-        },
-        {
-            text: 'What is the currency of Japan?',
-            options: ['Yuan', 'Won', 'Yen', 'Ringgit'],
-        },
-        {
-            text: 'Who discovered penicillin?',
-            options: ['Marie Curie', 'Alexander Fleming', 'Louis Pasteur', 'Antoine Lavoisier'],
-        },
-        {
-            text: 'What is the largest bird in the world?',
-            options: ['Penguin', 'Ostrich', 'Albatross', 'Eagle'],
-        },
-        {
-            text: 'Who painted "The Persistence of Memory"?',
-            options: ['Vincent van Gogh', 'Pablo Picasso', 'Claude Monet', 'Salvador Dalí'],
-        },
-        {
-            text: 'Who painted "The Persistence of Memory"?',
-            options: ['Vincent van Gogh', 'Pablo Picasso', 'Claude Monet', 'Salvador Dalí'],
-        },
-    ]);
-
     const param = useParams();
     const navigate = useNavigate();
 
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [userAnswers, setUserAnswers] = useState(new Array(questions.length).fill(null));
+    const [questions, setQuestions] = useState([]);
+    const [currentQuestion, setCurrentQuestion] = useState({});
     const [editMode, setEditMode] = useState(false);
     const [currentPractice, setCurrentPractice] = useState({});
+    const [currentIndex, setCurrentIndex] = useState(1);
 
     const fetchPracticeList = async () => {
-        const { data: response } = await axios.get('http://localhost:8871/api/practice/getallpractices');
+        const { data: practiceResponse } = await axios.get('http://localhost:8871/api/practice/getallpractices');
 
         // const { data: response } = await axios.get(
         //     'https://course-backend-meolearn.onrender.com/api/practice/getallpractices',
         // );
 
-        const foundPractice = response.data.find((practice) => practice.title === param.practiceTitle);
+        const { data: questionResponse } = await axios.get('http://localhost:8871/api/question/getallquestions');
+        const { data: questionTypeResponse } = await axios.get(
+            'http://localhost:8871/api/questiontype/getallquestiontypes',
+        );
 
-        console.log(foundPractice);
+        const practiceList = practiceResponse.data;
+        const questionList = questionResponse.data;
 
+        const filteredQuestionTypes = questionTypeResponse.data.filter(
+            (item) => item.questionCategoryId === param.practiceId,
+        );
+
+        const filteredQuestionList = questionList.filter((question) =>
+            filteredQuestionTypes.some((questionType) => questionType.questionId === question.id),
+        );
+
+        console.log(filteredQuestionList);
+
+        const foundPractice = practiceList.find((practice) => practice.id === param.practiceId);
+
+        setQuestions(filteredQuestionList);
+        setCurrentQuestion(filteredQuestionList[0]);
         setCurrentPractice(foundPractice);
-
-        if (foundPractice.requiredQuestionAmount < 40) {
-            setQuestions((prevQuestions) => prevQuestions.slice(0, foundPractice.requiredQuestionAmount - 40));
-        }
     };
 
     useEffect(() => {
         fetchPracticeList();
     }, []);
 
-    const handleOptionSelect = (selectedOption) => {
-        const newAnswers = [...userAnswers];
-        newAnswers[currentQuestion] = selectedOption;
-        setUserAnswers(newAnswers);
-    };
-
     const handleNextQuestion = () => {
-        setCurrentQuestion((prev) => prev + 1);
+        setCurrentQuestion((prev) => questions[questions.indexOf(prev) + 1]);
     };
 
     const handlePreviousQuestion = () => {
-        setCurrentQuestion((prev) => prev - 1);
+        setCurrentQuestion((prev) => questions[questions.indexOf(prev) - 1]);
     };
 
     const handleSubmission = () => {
-        console.log('User Answers:', userAnswers);
+        console.log(questions);
+
+        let saveSuccess = true;
+
+        questions.every(async (question) => {
+            const { data: questionResponse } = await axios.put('http://localhost:8871/api/question/updateQuestion', question);
+            console.log(questionResponse);
+            if (questionResponse.success === false) {
+                saveSuccess = false;
+                Swal.fire({
+                    title: 'Oobs!Something went wrong!',
+                    text: 'Save lession failed!',
+                    icon: 'error',
+                });
+                return false;
+            }
+
+            return true
+        })
+
+        if (saveSuccess === true) {
+            Swal.fire({
+                title: 'Good job!',
+                text: 'Save lession successfully!',
+                icon: 'success',
+            });
+        }
     };
 
     const handleEditToggle = () => {
         setEditMode(!editMode);
     };
 
-    const handleQuestionEdit = (index, newText) => {
+    const handleQuestionEdit = (e) => {
         const newQuestions = [...questions];
-        newQuestions[index].text = newText;
+        newQuestions[questions.indexOf(currentQuestion)].description = e.target.value;
         setQuestions(newQuestions);
     };
 
-    const handleOptionEdit = (questionIndex, optionIndex, newOption) => {
+    const handleAnswerEdit = (e) => {
         const newQuestions = [...questions];
-        newQuestions[questionIndex].options[optionIndex] = newOption;
+        newQuestions[questions.indexOf(currentQuestion)][e.target.name] = e.target.value;
         setQuestions(newQuestions);
     };
 
@@ -267,20 +134,20 @@ export default function PracticeDetailPage() {
                     <Button onClick={handleNavigateBack} sx={{ minWidth: '36px', marginRight: 1 }}>
                         <ArrowBackIosRounded />
                     </Button>
-                    {param.practiceTitle}
+                    {currentPractice.title}
                 </Typography>
 
                 <Grid container spacing={3}>
                     <Grid item xs={4}>
                         <Card sx={{ padding: 2 }}>
                             <Typography variant="h6">Question list</Typography>
-                            <Box spacing={1} mt={2} height={400}>
+                            <Box spacing={1} mt={2} height={436}>
                                 {questions.map((q, index) => (
                                     <Button
                                         key={index}
                                         variant="outlined"
                                         sx={{ margin: '2px', minWidth: '50px', minHeight: '50px' }}
-                                        onClick={() => setCurrentQuestion(index)}
+                                        onClick={() => setCurrentQuestion(questions[index])}
                                     >
                                         {index === currentQuestion ? <strong>{index + 1}</strong> : index + 1}
                                     </Button>
@@ -298,54 +165,135 @@ export default function PracticeDetailPage() {
 
                                 {/* Question display area */}
                                 {editMode ? (
-                                    // Edit mode for questions
                                     <TextField
                                         label="Edit Question"
                                         multiline
                                         fullWidth
-                                        value={questions[currentQuestion].text}
-                                        onChange={(e) => handleQuestionEdit(currentQuestion, e.target.value)}
+                                        value={currentQuestion?.description}
+                                        onChange={(e) => handleQuestionEdit(e)}
                                     />
                                 ) : (
-                                    // Display mode for questions
                                     <>
-                                        <Typography variant="h5">Question {currentQuestion + 1}</Typography>
-                                        <Typography>{questions[currentQuestion].text}</Typography>
+                                        <Typography variant="h5">
+                                            Question{' '}
+                                            {questions.indexOf(currentQuestion) + 1 === 0
+                                                ? currentIndex
+                                                : questions.indexOf(currentQuestion) + 1}
+                                        </Typography>
+                                        <Typography>{currentQuestion?.description}</Typography>
                                     </>
                                 )}
 
-                                {/* Answer options */}
                                 <FormGroup>
-                                    {questions[currentQuestion].options.map((option, optionIndex) => (
+                                    <>
                                         <FormControlLabel
                                             sx={{ marginTop: 2 }}
-                                            key={optionIndex}
                                             control={
                                                 <Radio
-                                                    checked={userAnswers[currentQuestion] === optionIndex}
-                                                    onChange={() => handleOptionSelect(optionIndex)}
+                                                    checked
+                                                // onChange={() => handleOptionSelect(optionIndex)}
                                                 />
                                             }
                                             label={
                                                 editMode ? (
-                                                    // Edit mode for options
                                                     <TextField
-                                                        value={option}
+                                                        name="correctAnswer"
+                                                        label="Correct Answer"
+                                                        value={currentQuestion?.correctAnswer}
                                                         onChange={(e) =>
-                                                            handleOptionEdit(
-                                                                currentQuestion,
-                                                                optionIndex,
-                                                                e.target.value,
-                                                            )
+                                                            handleAnswerEdit(e)
                                                         }
                                                     />
                                                 ) : (
-                                                    // Display mode for options
-                                                    option
+                                                    currentQuestion?.correctAnswer
                                                 )
                                             }
                                         />
-                                    ))}
+                                        <FormControlLabel
+                                            sx={{ marginTop: 2 }}
+                                            control={
+                                                <Radio
+                                                    checked={false}
+                                                // onChange={() => handleOptionSelect(optionIndex)}
+                                                />
+                                            }
+                                            label={
+                                                editMode ? (
+                                                    <TextField
+                                                        name="wrongAnswer1"
+                                                        label="Wrong Answer 1"
+                                                        value={currentQuestion?.wrongAnswer1}
+                                                        onChange={(e) => handleAnswerEdit(e)}
+                                                    />
+                                                ) : (
+                                                    currentQuestion?.wrongAnswer1
+                                                )
+                                            }
+                                        />
+                                        <FormControlLabel
+                                            sx={{ marginTop: 2 }}
+                                            control={
+                                                <Radio
+                                                    checked={false}
+                                                // onChange={() => handleOptionSelect(optionIndex)}
+                                                />
+                                            }
+                                            label={
+                                                editMode ? (
+                                                    <TextField
+                                                        name="wrongAnswer2"
+                                                        label="Wrong Answer 2"
+                                                        value={currentQuestion?.wrongAnswer2}
+                                                        onChange={(e) => handleAnswerEdit(e)}
+                                                    />
+                                                ) : (
+                                                    currentQuestion?.wrongAnswer2
+                                                )
+                                            }
+                                        />
+                                        <FormControlLabel
+                                            sx={{ marginTop: 2 }}
+                                            control={
+                                                <Radio
+                                                    checked={false}
+                                                // onChange={() => handleOptionSelect(optionIndex)}
+                                                />
+                                            }
+                                            label={
+                                                editMode ? (
+                                                    <TextField
+                                                        name="wrongAnswer3"
+                                                        label="Wrong Answer 3"
+                                                        value={currentQuestion?.wrongAnswer3}
+                                                        onChange={(e) => handleAnswerEdit(e)}
+                                                    />
+                                                ) : (
+                                                    currentQuestion?.wrongAnswer3
+                                                )
+                                            }
+                                        />
+                                        <FormControlLabel
+                                            sx={{ marginTop: 2 }}
+                                            control={
+                                                <Radio
+                                                    checked={false}
+                                                // onChange={() => handleOptionSelect(optionIndex)}
+                                                />
+                                            }
+                                            label={
+                                                editMode ? (
+                                                    <TextField
+                                                        name="wrongAnswer4"
+                                                        label="Wrong Answer 4"
+                                                        value={currentQuestion?.wrongAnswer4}
+                                                        onChange={(e) => handleAnswerEdit(e)}
+                                                    />
+                                                ) : (
+                                                    currentQuestion?.wrongAnswer4
+                                                )
+                                            }
+                                        />
+                                    </>
                                 </FormGroup>
 
                                 {/* Navigation buttons */}
@@ -354,7 +302,11 @@ export default function PracticeDetailPage() {
                                         variant="contained"
                                         color="primary"
                                         onClick={handlePreviousQuestion}
-                                        disabled={currentQuestion === 0 || editMode}
+                                        disabled={
+                                            questions.indexOf(currentQuestion) + 1 === 0 ||
+                                            editMode ||
+                                            questions.indexOf(currentQuestion) + 1 === 1
+                                        }
                                     >
                                         Previous
                                     </Button>
@@ -362,24 +314,18 @@ export default function PracticeDetailPage() {
                                         variant="contained"
                                         color="primary"
                                         onClick={handleNextQuestion}
-                                        disabled={currentQuestion === questions.length - 1 || editMode}
+                                        disabled={currentQuestion === questions[questions.length - 1] || editMode}
                                     >
                                         Next
                                     </Button>
+
                                 </Stack>
 
-                                {/* Submit button */}
-                                {currentQuestion === questions.length - 1 && !editMode && (
-                                    <Button variant="contained" color="primary" onClick={handleSubmission}>
-                                        Save
-                                    </Button>
-                                )}
+                                <Button variant="contained" color="primary" onClick={handleSubmission} disabled={editMode}>
+                                    Save
+                                </Button>
 
-                                {/* Progress bar */}
-                                <LinearProgress
-                                    variant="determinate"
-                                    value={(currentQuestion / (questions.length - 1)) * 100}
-                                />
+
                             </Stack>
                         </Card>
                     </Grid>

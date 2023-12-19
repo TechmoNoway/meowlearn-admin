@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
@@ -9,10 +10,48 @@ import { AppCurrentVisits, AppWebsiteVisits, AppWidgetSummary } from '../section
 
 // ----------------------------------------------------------------------
 
+const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+const years = [2023, 2022, 2021];
+
 export default function DashboardAppPage() {
     const theme = useTheme();
 
-    const [datesArray, setDatesArray] = useState([]);
+    const [userPerMonthData, setUserPerMonthData] = useState([]);
+    const [yearOption, setYearOption] = useState(2023);
+    const [userTotal, setUserTotal] = useState(0);
+
+    const fetchUserLogByYear = (year) => {
+        if (year === 2023) {
+            const userAmountArray = [];
+
+            months.forEach(async (item, index) => {
+                const { data: response } = await axios.get(
+                    `http://localhost:8870/api/user/getNewSignInUserByMonth/${item}`,
+                );
+
+                userAmountArray.push(response.data.length);
+
+                if (index === 11) {
+                    setUserPerMonthData(userAmountArray);
+                }
+            });
+
+        } else {
+            setUserPerMonthData([])
+        }
+    };
+
+    const fetchUserAmount = async () => {
+        const { data: response } = await axios.get(`http://localhost:8870/api/user/getallusers`);
+
+        setUserTotal(response.data.length);
+    };
+
+    useEffect(() => {
+        fetchUserAmount();
+    }, [])
+
+    // const [userAmount, setUserAmount] = useState(0);
 
     const firstDayEachMonth = (year) => {
         const dates = [];
@@ -27,16 +66,32 @@ export default function DashboardAppPage() {
             dates.push(formatted);
         }
 
-        console.log(dates);
-
         setDatesArray(dates);
     };
 
-    useEffect(() => {
-        firstDayEachMonth(2022);
-    }, []);
+    const handleChangeCurrentYear = (e) => {
+        setYearOption(e.target.value)
+    }
 
-    console.log(datesArray);
+    const [datesArray, setDatesArray] = useState([
+        '01/01/2003',
+        '02/01/2003',
+        '03/01/2003',
+        '04/01/2003',
+        '05/01/2003',
+        '06/01/2003',
+        '07/01/2003',
+        '08/01/2003',
+        '09/01/2003',
+        '10/01/2003',
+        '11/01/2003',
+    ]);
+
+
+    useEffect(() => {
+        firstDayEachMonth(yearOption);
+        fetchUserLogByYear(yearOption)
+    }, [yearOption]);
 
     return (
         <>
@@ -61,7 +116,7 @@ export default function DashboardAppPage() {
                     <Grid item xs={12} sm={6} md={3}>
                         <AppWidgetSummary
                             title="Web Users"
-                            total={10}
+                            total={userTotal}
                             color="warning"
                             icon={'ant-design:windows-filled'}
                         />
@@ -71,82 +126,41 @@ export default function DashboardAppPage() {
                         <AppWidgetSummary title="Bug Reports" total={10} color="error" icon={'ant-design:bug-filled'} />
                     </Grid>
 
-                    {/* <Grid item xs={12} md={6} lg={8}>
-                        <AppWebsiteVisits
-                            title="Website Visits"
-                            subheader="(+43%) than last year"
-                            chartLabels={[
-                                '01/01/2003',
-                                '02/01/2003',
-                                '03/01/2003',
-                                '04/01/2003',
-                                '05/01/2003',
-                                '06/01/2003',
-                                '07/01/2003',
-                                '08/01/2003',
-                                '09/01/2003',
-                                '10/01/2003',
-                                '11/01/2003',
-                            ]}
-                            chartData={[
-                                {
-                                    name: 'Team A',
-                                    type: 'column',
-                                    fill: 'solid',
-                                    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                                },
-                                {
-                                    name: 'Team B',
-                                    type: 'area',
-                                    fill: 'gradient',
-                                    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                                },
-                                {
-                                    name: 'Team C',
-                                    type: 'line',
-                                    fill: 'solid',
-                                    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                                },
-                            ]}
-                        />
-                    </Grid> */}
-
-                    <Grid item xs={12} md={12} lg={12}>
-                        <AppWebsiteVisits
-                            title="Website Visits"
-                            subheader="(+43%) than last year"
-                            chartLabels={datesArray}
-                            chartData={[
-                                {
-                                    name: 'Team A',
-                                    type: 'column',
-                                    fill: 'solid',
-                                    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 60],
-                                },
-                                {
-                                    name: 'Team B',
-                                    type: 'area',
-                                    fill: 'gradient',
-                                    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43, 60],
-                                },
-                                {
-                                    name: 'Team C',
-                                    type: 'line',
-                                    fill: 'solid',
-                                    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 60],
-                                },
-                            ]}
-                        />
-                    </Grid>
+                    {datesArray && (
+                        <Grid item xs={12} md={12} lg={12}>
+                            <AppWebsiteVisits
+                                title="Website Visits"
+                                // subheader="(+43%) than last year"
+                                coreValue={yearOption}
+                                options={years}
+                                onSort={(e) => handleChangeCurrentYear(e)}
+                                chartLabels={datesArray}
+                                chartData={[
+                                    {
+                                        name: 'Column',
+                                        type: 'column',
+                                        fill: 'solid',
+                                        data: userPerMonthData,
+                                    },
+                                    {
+                                        name: 'Area',
+                                        type: 'area',
+                                        fill: 'gradient',
+                                        data: userPerMonthData,
+                                    },
+                                ]}
+                            />
+                        </Grid>
+                    )}
 
                     <Grid item xs={12} md={12} lg={4}>
                         <AppCurrentVisits
                             title="Current Visits"
                             chartData={[
-                                { label: 'America', value: 4344 },
-                                { label: 'Asia', value: 5435 },
-                                { label: 'Europe', value: 1443 },
-                                { label: 'Africa', value: 4443 },
+                                { label: 'America', value: 0 },
+                                { label: 'Asia', value: userTotal },
+                                { label: 'Europe', value: 0 },
+                                { label: 'Africa', value: 0 },
                             ]}
                             chartColors={[
                                 theme.palette.primary.main,

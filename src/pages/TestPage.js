@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
@@ -14,13 +15,13 @@ import {
     TextField,
     Divider,
     Alert,
-    Autocomplete,
+    styled
 } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 // component
 import Iconify from '../components/iconify';
 import { TestList } from '../sections/@dashboard/test';
-import { sqlDate } from '../utils/formatDate';
 
 // ----------------------------------------------------------------------
 
@@ -37,8 +38,17 @@ const style = {
     p: 4,
 };
 
-const intervalOptions = ['25 minutes', '30 minutes', '60 minutes'];
-const quantityOptions = ['25', '30', '40'];
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
 
 // ----------------------------------------------------------------------
 
@@ -48,12 +58,9 @@ export default function TestPage() {
     const [newTestTitle, setNewTestTitle] = useState('');
     const [newTestDescription, setNewTestDescription] = useState('');
     const [addTestError, setAddTestError] = useState(null);
+    const [testFile, setTestFile] = useState(null);
+    const [testFileName, setTestFileName] = useState('');
 
-    const [testIntervalOption, setTestIntervalOption] = useState(intervalOptions[0]);
-    const [testIntervalValue, setTestIntervalValue] = useState('');
-
-    const [testQuantityOption, setTestQuantityOption] = useState(quantityOptions[0]);
-    const [testQuantityValue, setTestQuantityValue] = useState('');
 
     const fetchTests = async () => {
         const { data: response } = await axios.get('http://localhost:8871/api/test/getalltests');
@@ -76,32 +83,94 @@ export default function TestPage() {
         setAddTestError(null);
     };
 
+    // const handleAddNewTest = async () => {
+    //     if (newTestTitle === '') {
+    //         setAddTestError('Do not let any info empty!');
+    //     } else {
+    //         const newTest = {
+    //             id: `${tests.length + 1}`,
+    //             title: newTestTitle,
+    //             interval: '',
+    //             description: newTestDescription,
+    //             requireQuestionAmount: 30,
+    //             level: 1,
+    //             createdAt: sqlDate(),
+    //             updatedAt: null,
+    //         };
+
+    //         const { data: response } = await axios.post('http://localhost:8871/api/test/inserttest', newTest);
+
+    //         // const { data: response } = await axios.post(
+    //         //     'https://course-backend-meolearn.onrender.com/api/test/inserttest',
+    //         //     newTest,
+    //         // );
+
+    //         if (response.data !== null) {
+    //             setShowAddTestModal(false);
+    //             setAddTestError(null);
+    //             fetchTests();
+    //         }
+    //     }
+    // };
+
+    const handlePracticeFileUpload = (e) => {
+        const file = e.target.files[0];
+        setTestFile(file);
+        setTestFileName(file.name);
+    };
+
     const handleAddNewTest = async () => {
-        if (newTestTitle === '') {
+        if (newTestTitle === '' || testFile === null) {
             setAddTestError('Do not let any info empty!');
         } else {
             const newTest = {
-                id: `${tests.length + 1}`,
                 title: newTestTitle,
-                interval: '',
                 description: newTestDescription,
-                requireQuestionAmount: 30,
+                interval: '60 minutes',
+                requireQuestionAmount: 40,
                 level: 1,
-                createdAt: sqlDate(),
-                updatedAt: null,
+                courseId: "2701034384",
             };
 
-            const { data: response } = await axios.post('http://localhost:8871/api/test/inserttest', newTest);
+            const formData = new FormData();
 
-            // const { data: response } = await axios.post(
-            //     'https://course-backend-meolearn.onrender.com/api/test/inserttest',
-            //     newTest,
-            // );
+            formData.append('test', JSON.stringify(newTest));
+            formData.append('file', testFile);
+
+            const params = new URLSearchParams();
+            params.append('test', JSON.stringify(newTest));
+            params.append('file', testFile);
+
+            console.log(formData);
+            console.log(params.toString());
+
+            const url = `http://localhost:8871/api/practice/insertpractice`;
+
+            const { data: response } = await axios.post(url, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
 
             if (response.data !== null) {
                 setShowAddTestModal(false);
+                setTestFileName('');
+                setTestFile(null);
                 setAddTestError(null);
                 fetchTests();
+
+                Swal.fire({
+                    title: 'Create Test Successfully!',
+                    text: 'Success to create your test',
+                    icon: 'success',
+                });
+            } else {
+                setShowAddTestModal(false);
+                Swal.fire({
+                    title: 'Create Test Fail!',
+                    text: 'Fail to create your test',
+                    icon: 'error',
+                });
             }
         }
     };
@@ -177,46 +246,22 @@ export default function TestPage() {
                                         onChange={(e) => setNewTestDescription(e.target.value)}
                                     />
                                 </Box>
-                                <Box
-                                    sx={{
-                                        '& > :not(style)': { width: '50ch' },
-                                    }}
-                                >
-                                    <Autocomplete
-                                        value={testIntervalOption}
-                                        onChange={(event, newValue) => {
-                                            setTestIntervalOption(newValue);
-                                        }}
-                                        inputValue={testIntervalValue}
-                                        onInputChange={(event, newInputValue) => {
-                                            setTestIntervalValue(newInputValue);
-                                        }}
-                                        id="interval-options"
-                                        options={intervalOptions}
-                                        sx={{ width: 300 }}
-                                        renderInput={(params) => <TextField {...params} label="Test interval" />}
-                                    />
-                                </Box>
-                                <Box
-                                    sx={{
-                                        '& > :not(style)': { width: '50ch' },
-                                    }}
-                                >
-                                    <Autocomplete
-                                        value={testQuantityOption}
-                                        onChange={(event, newValue) => {
-                                            setTestQuantityOption(newValue);
-                                        }}
-                                        inputValue={testQuantityValue}
-                                        onInputChange={(event, newInputValue) => {
-                                            setTestQuantityValue(newInputValue);
-                                        }}
-                                        id="quantity-options"
-                                        options={quantityOptions}
-                                        sx={{ width: 300 }}
-                                        renderInput={(params) => <TextField {...params} label="Question quantity" />}
-                                    />
-                                </Box>
+                                <Stack spacing={1} direction="row" alignItems="center">
+                                    <Button
+                                        sx={{ height: 50 }}
+                                        component="label"
+                                        variant="contained"
+                                        startIcon={<CloudUploadIcon />}
+                                    >
+                                        Upload practice file
+                                        <VisuallyHiddenInput
+                                            type="file"
+                                            accept="application/pdf"
+                                            onChange={handlePracticeFileUpload}
+                                        />
+                                    </Button>
+                                    {testFileName && <span>{testFileName}</span>}
+                                </Stack>
                             </Stack>
                             <Divider sx={{ borderStyle: '3px dashed #000000', color: 'black' }} />
                             <Stack direction="row" justifyContent={'end'} spacing={1}>

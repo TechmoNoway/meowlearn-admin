@@ -12,6 +12,7 @@ import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import classNames from 'classnames/bind';
 import Styles from './CourseDetail.module.scss';
 import stringIdSort from '../../../../utils/sort';
+import BiggerIconify from '../../../../components/iconify/BiggerIconify';
 
 const cx = classNames.bind(Styles);
 
@@ -33,9 +34,11 @@ function CourseDetail({ block }) {
             //     'https://course-backend-meolearn.onrender.com/api/lesson/getalllessons',
             // );
 
-            const result = response.data.filter((item) => item.blockId === '7');
+            const result = response.data.filter((item) => item.blockId === param.courseId);
 
             result.sort(stringIdSort);
+
+            console.log(result);
 
             setLessonList(result);
         };
@@ -54,7 +57,7 @@ function CourseDetail({ block }) {
                     <Button onClick={handleNavigateBack} sx={{ minWidth: '36px', marginRight: 1 }}>
                         <ArrowBackIosRoundedIcon />
                     </Button>
-                    Course Detail
+                    Block Detail
                 </Typography>
                 <div className={cx('course-section')}>
                     <Box sx={{ marginY: 4 }} className={cx('badge', 'green-badge')}>
@@ -62,141 +65,111 @@ function CourseDetail({ block }) {
                     </Box>
 
                     <Stack sx={{ display: 'flex', flex: 'flex-column', alignItems: 'center', paddingTop: 1 }}>
-                        <Link to={`/dashboard/lesson/${lessonList[0]?.title}`}>
+                        {lessonList.length > 0 && (<Link to={`/dashboard/lesson/${lessonList[0]?.id}`}>
                             <Button
-                                // onClick={handleNavigateToLesson}
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 className={cx('green-button-active', 'button-to-get-in-lesson', 'lesson-active')}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-one-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[1]?.title}`}>
+                        {lessonList.length > 1 && (<Link to={`/dashboard/lesson/${lessonList[1]?.id}`}>
                             <Button
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 type="submit"
                                 className={cx('button-to-get-in-lesson', 'green-button-active', 'position-relative')}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-two-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[2]?.title}`}>
+                        {lessonList.length > 2 && (<Link to={`/dashboard/lesson/${lessonList[2]?.id}`}>
                             <Button
                                 type="submit"
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 className={cx('button-to-get-in-lesson', 'green-button-active')}
                                 style={{ left: '-45px' }}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-three-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[3]?.title}`}>
+                        {lessonList.length > 3 && (<Link to={`/dashboard/lesson/${lessonList[3]?.id}`}>
                             <Button
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 type="submit"
                                 className={cx('button-to-get-in-lesson', 'green-button-active')}
                                 style={{ left: '-80px' }}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-four-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[4]?.title}`}>
+                        {lessonList.length > 4 && (<Link to={`/dashboard/lesson/${lessonList[4]?.id}`}>
                             <Button
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 type="submit"
                                 className={cx('button-to-get-in-lesson', 'green-button-active')}
                                 style={{ left: '-45px' }}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-five-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[5]?.title}`}>
+                        {lessonList.length > 5 && (<Link to={`/dashboard/lesson/${lessonList[5]?.id}`}>
                             <Button
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 type="submit"
                                 className={cx('button-to-get-in-lesson', 'green-button-active')}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-six-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[6]?.title}`}>
+                        {lessonList.length > 6 && (<Link to={`/dashboard/lesson/${lessonList[6]?.id}`}>
                             <Button
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 type="submit"
                                 className={cx('button-to-get-in-lesson', 'green-button-active')}
                                 style={{ left: '55px' }}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-seven-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[7]?.title}`}>
+                        {lessonList.length > 7 && (<Link to={`/dashboard/lesson/${lessonList[7]?.id}`}>
                             <Button
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 type="submit"
                                 className={cx('button-to-get-in-lesson', 'green-button-active')}
                                 style={{ left: '85px' }}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-eight-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[8]?.title}`}>
+                        {lessonList.length > 8 && (<Link to={`/dashboard/lesson/${lessonList[8]?.id}`}>
                             <Button
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 type="submit"
                                 className={cx('button-to-get-in-lesson', 'green-button-active')}
                                 style={{ left: '50px' }}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-nine-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
 
-                        <Link to={`/dashboard/lesson/${lessonList[9]?.title}`}>
+                        {lessonList.length > 9 && (<Link to={`/dashboard/lesson/${lessonList[9]?.id}`}>
                             <Button
-                                sx={{ marginY: 2, position: 'relative' }}
+                                sx={{ marginY: 2, position: 'relative', color: 'white' }}
                                 type="submit"
                                 className={cx('button-to-get-in-lesson', 'green-button-active')}
+                                style={{ left: '50px' }}
                             >
-                                <img
-                                    src="https://d35aaqx5ub95lt.cloudfront.net/images/path/icons/ef9c771afdb674f0ff82fae25c6a7b0a.svg"
-                                    alt=""
-                                />
+                                <BiggerIconify icon="ph:number-zero-bold" />
                             </Button>
-                        </Link>
+                        </Link>)}
                     </Stack>
                 </div>
             </Container>

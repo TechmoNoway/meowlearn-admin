@@ -23,207 +23,51 @@ import {
 // ----------------------------------------------------------------------
 
 export default function TestDetailPage() {
-    const [questions, setQuestions] = useState([
-        {
-            text: 'What is the capital of France?',
-            options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-        },
-        {
-            text: 'Which planet is known as the Red Planet?',
-            options: ['Mars', 'Venus', 'Jupiter', 'Saturn'],
-        },
-        {
-            text: 'Who wrote "Romeo and Juliet"?',
-            options: ['Charles Dickens', 'William Shakespeare', 'Jane Austen', 'Mark Twain'],
-        },
-        {
-            text: 'What is the capital of France?',
-            options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-        },
-        {
-            text: 'Which planet is known as the Red Planet?',
-            options: ['Mars', 'Venus', 'Jupiter', 'Saturn'],
-        },
-        {
-            text: 'Who painted the Mona Lisa?',
-            options: ['Vincent van Gogh', 'Pablo Picasso', 'Leonardo da Vinci', 'Claude Monet'],
-        },
-        {
-            text: 'What is the largest mammal?',
-            options: ['Elephant', 'Blue Whale', 'Giraffe', 'Hippopotamus'],
-        },
-        {
-            text: 'In which year did World War II end?',
-            options: ['1943', '1945', '1950', '1939'],
-        },
-        {
-            text: 'What is the capital of Japan?',
-            options: ['Beijing', 'Tokyo', 'Seoul', 'Bangkok'],
-        },
-        {
-            text: 'Who wrote "To Kill a Mockingbird"?',
-            options: ['J.K. Rowling', 'Ernest Hemingway', 'Harper Lee', 'F. Scott Fitzgerald'],
-        },
-        {
-            text: 'What is the chemical symbol for gold?',
-            options: ['Au', 'Ag', 'Fe', 'Hg'],
-        },
-        {
-            text: 'Which country is known as the Land of the Rising Sun?',
-            options: ['China', 'Japan', 'South Korea', 'Vietnam'],
-        },
-        {
-            text: 'Who developed the theory of relativity?',
-            options: ['Isaac Newton', 'Albert Einstein', 'Galileo Galilei', 'Stephen Hawking'],
-        },
-        {
-            text: 'Which ocean is the largest?',
-            options: ['Atlantic Ocean', 'Indian Ocean', 'Southern Ocean', 'Pacific Ocean'],
-        },
-        {
-            text: 'What is the capital of Australia?',
-            options: ['Sydney', 'Melbourne', 'Canberra', 'Brisbane'],
-        },
-        {
-            text: 'Who is the author of "1984"?',
-            options: ['Aldous Huxley', 'George Orwell', 'Ray Bradbury', 'J.R.R. Tolkien'],
-        },
-        {
-            text: 'What is the currency of Brazil?',
-            options: ['Peso', 'Rupiah', 'Real', 'Yen'],
-        },
-        {
-            text: 'Which element has the chemical symbol "O"?',
-            options: ['Oxygen', 'Osmium', 'Oganesson', 'Osmium'],
-        },
-        {
-            text: 'Who was the first woman to win a Nobel Prize?',
-            options: ['Marie Curie', 'Rosalind Franklin', 'Jane Goodall', 'Ada Lovelace'],
-        },
-        {
-            text: 'What is the main ingredient in guacamole?',
-            options: ['Tomato', 'Onion', 'Avocado', 'Cilantro'],
-        },
-        {
-            text: 'Which country is known as the Land of the Midnight Sun?',
-            options: ['Norway', 'Canada', 'Russia', 'Sweden'],
-        },
-        {
-            text: 'Who played the character Jack Dawson in the movie "Titanic"?',
-            options: ['Leonardo DiCaprio', 'Brad Pitt', 'Tom Hanks', 'Johnny Depp'],
-        },
-        {
-            text: 'What is the largest desert in the world?',
-            options: ['Sahara Desert', 'Gobi Desert', 'Antarctica', 'Arabian Desert'],
-        },
-        {
-            text: 'Which planet is known as the "Red Planet"?',
-            options: ['Venus', 'Mars', 'Jupiter', 'Saturn'],
-        },
-        {
-            text: 'Who is the author of "Pride and Prejudice"?',
-            options: ['Charlotte Brontë', 'Emily Brontë', 'Jane Austen', 'Charles Dickens'],
-        },
-        {
-            text: 'What is the tallest mountain in the world?',
-            options: ['Mount Kilimanjaro', 'Mount Everest', 'Denali', 'Mount Fuji'],
-        },
-        {
-            text: 'Who is known as the "Father of Computer Science"?',
-            options: ['Alan Turing', 'Charles Babbage', 'Ada Lovelace', 'Tim Berners-Lee'],
-        },
-        {
-            text: 'What is the speed of light in a vacuum?',
-            options: [
-                '299,792 kilometers per second',
-                '150,000 kilometers per second',
-                '450,000 kilometers per second',
-                '600,000 kilometers per second',
-            ],
-        },
-        {
-            text: 'Which animal is known as the "King of the Jungle"?',
-            options: ['Elephant', 'Lion', 'Tiger', 'Giraffe'],
-        },
-        {
-            text: 'Who painted "Starry Night"?',
-            options: ['Vincent van Gogh', 'Pablo Picasso', 'Claude Monet', 'Leonardo da Vinci'],
-        },
-        {
-            text: 'What is the largest island in the world?',
-            options: ['Greenland', 'Australia', 'Borneo', 'Madagascar'],
-        },
-        {
-            text: "Which gas makes up the majority of Earth's atmosphere?",
-            options: ['Oxygen', 'Carbon Dioxide', 'Nitrogen', 'Hydrogen'],
-        },
-        {
-            text: 'Who is the author of "The Great Gatsby"?',
-            options: ['F. Scott Fitzgerald', 'Ernest Hemingway', 'J.D. Salinger', 'Charles Dickens'],
-        },
-        {
-            text: 'What is the smallest prime number?',
-            options: ['0', '1', '2', '3'],
-        },
-        {
-            text: 'Who is known as the "Queen of Pop"?',
-            options: ['Madonna', 'Beyoncé', 'Lady Gaga', 'Rihanna'],
-        },
-        {
-            text: 'What is the currency of Japan?',
-            options: ['Yuan', 'Won', 'Yen', 'Ringgit'],
-        },
-        {
-            text: 'Who discovered penicillin?',
-            options: ['Marie Curie', 'Alexander Fleming', 'Louis Pasteur', 'Antoine Lavoisier'],
-        },
-        {
-            text: 'What is the largest bird in the world?',
-            options: ['Penguin', 'Ostrich', 'Albatross', 'Eagle'],
-        },
-        {
-            text: 'Who painted "The Persistence of Memory"?',
-            options: ['Vincent van Gogh', 'Pablo Picasso', 'Claude Monet', 'Salvador Dalí'],
-        },
-        {
-            text: 'Who painted "The Persistence of Memory"?',
-            options: ['Vincent van Gogh', 'Pablo Picasso', 'Claude Monet', 'Salvador Dalí'],
-        },
-    ]);
-
     const param = useParams();
     const navigate = useNavigate();
 
+    const [questions, setQuestions] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [userAnswers, setUserAnswers] = useState(new Array(questions.length).fill(null));
     const [editMode, setEditMode] = useState(false);
     const [currentTest, setCurrentTest] = useState({});
 
     const fetchTestList = async () => {
-        const { data: response } = await axios.get('http://localhost:8871/api/test/getalltests');
+        const { data: testResponse } = await axios.get('http://localhost:8871/api/test/getalltests');
 
         // const { data: response } = await axios.get('https://course-backend-meolearn.onrender.com/api/test/getalltests');
 
-        const foundTest = response.data.find((test) => test.title === param.testTitle);
+        const { data: questionResponse } = await axios.get('http://localhost:8871/api/question/getallquestions');
+        const { data: questionTypeResponse } = await axios.get(
+            'http://localhost:8871/api/questiontype/getallquestiontypes',
+        );
+
+        const testList = testResponse.data;
+        const questionList = questionResponse.data;
+
+        const filteredQuestionTypes = questionTypeResponse.data.filter(
+            (item) => item.questionCategoryId === param.testId,
+        );
+
+        const filteredQuestionList = questionList.filter((question) =>
+            filteredQuestionTypes.some((questionType) => questionType.questionId === question.id),
+        );
+
+        console.log(filteredQuestionList);
+
+        const foundTest = testList.find((test) => test.id === param.testId);
 
         console.log(foundTest);
 
         setCurrentTest(foundTest);
 
-        if (foundTest.requiredQuestionAmount < 40) {
-            setQuestions((prevQuestions) => prevQuestions.slice(0, foundTest.requiredQuestionAmount - 40));
-        }
+        setQuestions(filteredQuestionList);
+        setCurrentQuestion(filteredQuestionList[currentQuestion]);
+        setCurrentTest(foundTest)
     };
 
     useEffect(() => {
         fetchTestList();
     }, []);
-
-    const handleOptionSelect = (selectedOption) => {
-        const newAnswers = [...userAnswers];
-        newAnswers[currentQuestion] = selectedOption;
-        setUserAnswers(newAnswers);
-    };
 
     const handleNextQuestion = () => {
         setCurrentQuestion((prev) => prev + 1);
@@ -234,23 +78,22 @@ export default function TestDetailPage() {
     };
 
     const handleSubmission = () => {
-        // Handle submission logic, e.g., send answers to the server
-        console.log('User Answers:', userAnswers);
+        console.log(questions);
     };
 
     const handleEditToggle = () => {
         setEditMode(!editMode);
     };
 
-    const handleQuestionEdit = (index, newText) => {
+    const handleQuestionEdit = (e) => {
         const newQuestions = [...questions];
-        newQuestions[index].text = newText;
+        newQuestions[currentQuestion].text = e.target.value;
         setQuestions(newQuestions);
     };
 
-    const handleOptionEdit = (questionIndex, optionIndex, newOption) => {
+    const handleOptionEdit = (e) => {
         const newQuestions = [...questions];
-        newQuestions[questionIndex].options[optionIndex] = newOption;
+        newQuestions[currentQuestion][e.target.name] = e.target.value;
         setQuestions(newQuestions);
     };
 
@@ -269,7 +112,7 @@ export default function TestDetailPage() {
                     <Button onClick={handleNavigateBack} sx={{ minWidth: '36px', marginRight: 1 }}>
                         <ArrowBackIosRounded />
                     </Button>
-                    {param.testTitle}
+                    {currentTest.title}
                 </Typography>
 
                 <Grid container spacing={3}>
@@ -305,49 +148,136 @@ export default function TestDetailPage() {
                                         label="Edit Question"
                                         multiline
                                         fullWidth
-                                        value={questions[currentQuestion].text}
-                                        onChange={(e) => handleQuestionEdit(currentQuestion, e.target.value)}
+                                        value={questions[currentQuestion].description}
+                                        onChange={(e) => handleQuestionEdit(e)}
                                     />
                                 ) : (
                                     // Display mode for questions
                                     <>
                                         <Typography variant="h5">Question {currentQuestion + 1}</Typography>
-                                        <Typography>{questions[currentQuestion].text}</Typography>
+                                        <Typography>{questions[currentQuestion].description}</Typography>
                                     </>
                                 )}
 
                                 {/* Answer options */}
                                 <FormGroup>
-                                    {questions[currentQuestion].options.map((option, optionIndex) => (
+                                    <>
                                         <FormControlLabel
                                             sx={{ marginTop: 2 }}
-                                            key={optionIndex}
                                             control={
                                                 <Radio
-                                                    checked={userAnswers[currentQuestion] === optionIndex}
-                                                    onChange={() => handleOptionSelect(optionIndex)}
+                                                    checked
                                                 />
                                             }
                                             label={
                                                 editMode ? (
                                                     // Edit mode for options
                                                     <TextField
-                                                        value={option}
+                                                        name="correctAnswer"
+                                                        label="Correct Answer"
+                                                        value={questions[currentQuestion].correctAnswer}
                                                         onChange={(e) =>
-                                                            handleOptionEdit(
-                                                                currentQuestion,
-                                                                optionIndex,
-                                                                e.target.value,
-                                                            )
+                                                            handleOptionEdit(e)
                                                         }
                                                     />
                                                 ) : (
-                                                    // Display mode for options
-                                                    option
+                                                    questions[currentQuestion].correctAnswer
                                                 )
                                             }
                                         />
-                                    ))}
+
+                                        <FormControlLabel
+                                            sx={{ marginTop: 2 }}
+                                            control={
+                                                <Radio
+                                                    checked={false}
+                                                />
+                                            }
+                                            label={
+                                                editMode ? (
+                                                    <TextField
+                                                        name="wrongAnswer1"
+                                                        label="Wrong Answer 1"
+                                                        value={questions[currentQuestion].wrongAnswer1}
+                                                        onChange={(e) =>
+                                                            handleOptionEdit(e)
+                                                        }
+                                                    />
+                                                ) : (
+                                                    questions[currentQuestion].wrongAnswer1
+                                                )
+                                            }
+                                        />
+
+                                        <FormControlLabel
+                                            sx={{ marginTop: 2 }}
+                                            control={
+                                                <Radio
+                                                    checked={false}
+                                                />
+                                            }
+                                            label={
+                                                editMode ? (
+                                                    <TextField
+                                                        name="wrongAnswer2"
+                                                        label="Wrong Answer 2"
+                                                        value={questions[currentQuestion].wrongAnswer1}
+                                                        onChange={(e) =>
+                                                            handleOptionEdit(e)
+                                                        }
+                                                    />
+                                                ) : (
+                                                    questions[currentQuestion].wrongAnswer1
+                                                )
+                                            }
+                                        />
+
+                                        <FormControlLabel
+                                            sx={{ marginTop: 2 }}
+                                            control={
+                                                <Radio
+                                                    checked={false}
+                                                />
+                                            }
+                                            label={
+                                                editMode ? (
+                                                    <TextField
+                                                        name="wrongAnswer3"
+                                                        label="Wrong Answer 3"
+                                                        value={questions[currentQuestion].wrongAnswer1}
+                                                        onChange={(e) =>
+                                                            handleOptionEdit(e)
+                                                        }
+                                                    />
+                                                ) : (
+                                                    questions[currentQuestion].wrongAnswer1
+                                                )
+                                            }
+                                        />
+
+                                        <FormControlLabel
+                                            sx={{ marginTop: 2 }}
+                                            control={
+                                                <Radio
+                                                    checked={false}
+                                                />
+                                            }
+                                            label={
+                                                editMode ? (
+                                                    <TextField
+                                                        name="wrongAnswer4"
+                                                        label="Wrong Answer 4"
+                                                        value={questions[currentQuestion].wrongAnswer1}
+                                                        onChange={(e) =>
+                                                            handleOptionEdit(e)
+                                                        }
+                                                    />
+                                                ) : (
+                                                    questions[currentQuestion].wrongAnswer1
+                                                )
+                                            }
+                                        />
+                                    </>
                                 </FormGroup>
 
                                 {/* Navigation buttons */}
@@ -368,14 +298,15 @@ export default function TestDetailPage() {
                                     >
                                         Next
                                     </Button>
+
+
                                 </Stack>
 
-                                {/* Submit button */}
-                                {currentQuestion === questions.length - 1 && !editMode && (
-                                    <Button variant="contained" color="primary" onClick={handleSubmission}>
-                                        Save
-                                    </Button>
-                                )}
+                                <Button variant="contained" color="primary" onClick={handleSubmission} disabled={editMode}>
+                                    Save
+                                </Button>
+
+
 
                                 {/* Progress bar */}
                                 <LinearProgress

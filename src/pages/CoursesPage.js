@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Container, Stack, Typography, Button, Modal, Fade, Box, TextField, Divider, Alert } from '@mui/material';
+import Swal from 'sweetalert2';
 import axios from 'axios';
-
+// mui
+import { Container, Stack, Typography, Button, Modal, Fade, Box, TextField, Divider, Alert, CircularProgress } from '@mui/material';
+// components
+import { useNavigate } from 'react-router-dom';
 import Iconify from '../components/iconify';
 import { CourseList } from '../sections/@dashboard/courses';
-import { sqlDate } from '../utils/formatDate';
 
 const style = {
     position: 'absolute',
@@ -21,6 +23,9 @@ const style = {
 };
 
 export default function CoursesPage() {
+
+    const navigate = useNavigate();
+
     const [courses, setCourses] = useState([]);
     const [showAddCourseModal, setShowAddCourseModal] = useState(false);
     const [newCourseTitle, setNewCourseTitle] = useState('');
@@ -54,16 +59,15 @@ export default function CoursesPage() {
         if (newCourseTitle === '' || newCourseDes === '') {
             setAddCourseError('Do not let any info empty!');
         } else {
-            const newCourse = {
-                id: `${courses.length + 1}`,
+            
+
+            const newBlock = {
                 title: newCourseTitle,
                 description: newCourseDes,
-                courseId: '9',
-                createdAt: sqlDate(),
-                updatedAt: null,
+                courseId: '2701034384'
             };
 
-            const { data: response } = await axios.post('http://localhost:8871/api/block/insertblock', newCourse);
+            const { data: response } = await axios.post('http://localhost:8871/api/block/insertblock', newBlock);
 
             // const { data: response } = await axios.post(
             //     'https://course-backend-meolearn.onrender.com/api/block/insertblock',
@@ -71,9 +75,25 @@ export default function CoursesPage() {
             // );
 
             if (response.data !== null) {
+               
                 setShowAddCourseModal(false);
                 setAddCourseError(null);
                 fetchCourses();
+
+                Swal.fire({
+                    title: 'Create Block Successfully!',
+                    text: 'Success to create your practice',
+                    icon: 'success',
+                });
+
+            
+            } else {
+                setShowAddCourseModal(false);
+                Swal.fire({
+                    title: 'Create Block Fail!',
+                    text: 'Fail to create your practice',
+                    icon: 'error',
+                });
             }
         }
     };
@@ -86,7 +106,7 @@ export default function CoursesPage() {
 
             <Container>
                 <Typography variant="h4" mb={5}>
-                    Courses
+                    Blocks
                 </Typography>
 
                 <CourseList courses={courses} />
@@ -104,7 +124,7 @@ export default function CoursesPage() {
                         startIcon={<Iconify icon="eva:plus-fill" />}
                         onClick={handleOpenModal}
                     >
-                        New Course Theme
+                        New Block Theme
                     </Button>
                 </Stack>
 
@@ -155,7 +175,8 @@ export default function CoursesPage() {
                                 <Button color="inherit" variant="outlined" onClick={() => setShowAddCourseModal(false)}>
                                     <Typography>Cancel</Typography>
                                 </Button>
-                                <Button color="primary" variant="contained" onClick={handleAddNewCourse}>
+                                <Button color="primary" variant="contained"  onClick={handleAddNewCourse}>
+
                                     <Typography>Add New</Typography>
                                 </Button>
                             </Stack>

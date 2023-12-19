@@ -16,6 +16,8 @@ import TestPage from './pages/TestPage';
 import PracticePage from './pages/PracticePage';
 import PracticeDetailPage from './pages/PracticeDetailPage';
 import TestDetailPage from './pages/TestDetailPage';
+import OrderPage from './pages/OrderPage';
+import TaskPage from './pages/TaskPage';
 
 // ----------------------------------------------------------------------
 
@@ -35,9 +37,11 @@ export default function Router() {
                 { path: 'profile', element: <ProfilePage /> },
                 { path: 'testmanage', element: <TestPage /> },
                 { path: 'practicepage', element: <PracticePage /> },
-                { path: 'practicedetail/:practiceTitle', element: <PracticeDetailPage /> },
+                { path: 'practicedetail/:practiceId', element: <PracticeDetailPage /> },
                 { path: 'testpage', element: <TestPage /> },
-                { path: 'testdetail/:testTitle', element: <TestDetailPage /> },
+                { path: 'testdetail/:testId', element: <TestDetailPage /> },
+                { path: 'task', element: <TaskPage /> },
+                { path: 'order', element: <OrderPage /> },
                 { path: '404', element: <Page404 /> },
                 { path: '*', element: <Navigate to="/404" /> },
             ],
