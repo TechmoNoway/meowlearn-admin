@@ -202,7 +202,7 @@ export default function PracticePage() {
                                     />
                                 </Box>
 
-                                w
+                            
 
                                 <Stack spacing={1} direction="row" alignItems="center">
                                     <Button
